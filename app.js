@@ -1,25 +1,43 @@
-function logMessage(message, type = 'info') {
-  const consoleBody = document.getElementById('console-logs');
-  if (!consoleBody) return;
-  const line = document.createElement('div');
-  line.className = `log-line ${type}`;
-  line.textContent = message;
-  consoleBody.appendChild(line);
-}
+document.addEventListener('DOMContentLoaded', () => {
+  // FAQ Accordion Toggle
+  const faqItems = document.querySelectorAll('.faq-item');
+  faqItems.forEach(item => {
+    const toggleBtn = item.querySelector('.faq-toggle');
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', () => {
+        const isActive = item.classList.contains('active');
+        faqItems.forEach(i => i.classList.remove('active'));
+        if (!isActive) {
+          item.classList.add('active');
+        }
+      });
+    }
+  });
 
-function connectVercel() {
-  logMessage('[i] Initiating Vercel connection...', 'info');
-  alert('To connect Vercel:\n1. Run `npx vercel login` in your terminal.\n2. Or connect your repository directly via https://vercel.com/new');
-}
-
-function showSupabaseModal() {
-  logMessage('[i] Opening Supabase configuration prompt...', 'info');
-  const url = prompt('Enter your Supabase URL (e.g. https://xyz.supabase.co):');
-  const key = prompt('Enter your Supabase Anon Key:');
-  if (url && key) {
-    logMessage('[✓] Supabase credentials updated locally.', 'success');
-    alert('Supabase keys configured!');
+  // Play Button Click Handlers
+  const playBtn = document.querySelector('.play-btn');
+  if (playBtn) {
+    playBtn.addEventListener('click', () => {
+      alert('Playing showcase video: Groover Growth Story (11x Faster)');
+    });
   }
-}
 
-console.log('First project dashboard initialized.');
+  // Smooth scroll active nav highlight
+  const sections = document.querySelectorAll('section[id]');
+  window.addEventListener('scroll', () => {
+    const scrollY = window.pageYOffset;
+    sections.forEach(current => {
+      const sectionHeight = current.offsetHeight;
+      const sectionTop = current.offsetTop - 100;
+      const sectionId = current.getAttribute('id');
+      const navLink = document.querySelector(`.nav-links a[href*=${sectionId}]`);
+      if (navLink) {
+        if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+          navLink.classList.add('active');
+        } else {
+          navLink.classList.remove('active');
+        }
+      }
+    });
+  });
+});
