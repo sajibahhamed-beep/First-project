@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>First Project Dashboard | Antigravity Workspace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="background-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <main class="container">
+    <header class="header">
+      <div class="badge">
+        <span class="status-pulse"></span> Integration Control Center
+      </div>
+      <h1>First Project Dashboard</h1>
+      <p class="subtitle">Unified status for GitHub, Vercel, and Supabase integrations.</p>
+    </header>
+
+    <section class="cards-grid">
+      <!-- GitHub Card -->
+      <article class="card connected">
+        <div class="card-header">
+          <div class="icon-box github-icon">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+          </div>
+          <span class="tag connected-tag">Connected</span>
+        </div>
+        <h2>GitHub</h2>
+        <p class="account-info">Logged in as <strong id="github-user">sajibahhamed-beep</strong></p>
+        <div class="repo-badge" id="repo-name">sajibahhamed-beep/first-project</div>
+      </article>
+
+      <!-- Vercel Card -->
+      <article class="card pending">
+        <div class="card-header">
+          <div class="icon-box vercel-icon">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 1L24 22H0L12 1Z"/></svg>
+          </div>
+          <span class="tag pending-tag">Action Required</span>
+        </div>
+        <h2>Vercel</h2>
+        <p class="account-info">Automated Deployments & Hosting</p>
+        <button class="btn btn-vercel" onclick="connectVercel()">Connect Vercel Account</button>
+      </article>
+
+      <!-- Supabase Card -->
+      <article class="card pending">
+        <div class="card-header">
+          <div class="icon-box supabase-icon">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M13.35 24l-1.9-8.4h9.85L8.65 0l1.9 8.4H.7l12.65 15.6z"/></svg>
+          </div>
+          <span class="tag pending-tag">Action Required</span>
+        </div>
+        <h2>Supabase</h2>
+        <p class="account-info">PostgreSQL Database & Auth</p>
+        <button class="btn btn-supabase" onclick="showSupabaseModal()">Add Supabase Keys</button>
+      </article>
+    </section>
+
+    <!-- Interactive Terminal & Quick Links -->
+    <section class="console-box">
+      <div class="console-header">
+        <div class="dots">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+        </div>
+        <span class="console-title">Workspace Terminal Log</span>
+      </div>
+      <div class="console-body" id="console-logs">
+        <div class="log-line success">[✓] GitHub CLI version 2.96.0 verified.</div>
+        <div class="log-line success">[✓] Authenticated with GitHub account: sajibahhamed-beep</div>
+        <div class="log-line success">[✓] Git identity configured for sajibahhamed-beep.</div>
+        <div class="log-line info">[i] Initializing local repository and remote GitHub origin...</div>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
