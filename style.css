@@ -45,32 +45,32 @@ p, span, a, label, .hero-line-4, .about-text, .project-desc, .quote, .author-rol
   color: var(--cyan-primary);
 }
 
-/* FLOATING CONTACT ME PILL BUTTON (Matching exact attached screenshot) */
-.fixed-whatsapp-pill {
+/* FLOATING CONTACT ME BUTTON (Matching exact Figma file specs) */
+.floating-contact-figma {
   position: fixed;
   bottom: 30px;
   right: 30px;
   z-index: 9999;
   text-decoration: none;
-  background: #222226;
+  background: #1c1c1f;
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 999px;
-  padding: 0.75rem 1.65rem 0.75rem 0.85rem;
+  padding: 0.7rem 1.6rem 0.7rem 0.8rem;
   display: flex;
   align-items: center;
-  gap: 0.85rem;
+  gap: 0.8rem;
   box-shadow: 0 12px 35px rgba(0,0,0,0.85);
-  transition: transform 0.25s ease, background 0.25s ease;
+  transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
 }
 
-.wa-pill-icon {
+.figma-wa-icon {
   width: 40px;
   height: 40px;
   object-fit: contain;
   filter: drop-shadow(0 2px 8px rgba(37, 211, 102, 0.5));
 }
 
-.wa-pill-text {
+.figma-wa-text {
   color: #ffffff;
   font-family: var(--font-heading);
   font-weight: 700;
@@ -79,9 +79,10 @@ p, span, a, label, .hero-line-4, .about-text, .project-desc, .quote, .author-rol
   white-space: nowrap;
 }
 
-.fixed-whatsapp-pill:hover {
+.floating-contact-figma:hover {
   transform: translateY(-4px);
-  background: #2a2a2e;
+  background: #27272a;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.9);
 }
 
 /* Navbar (Top Left White Sajuxly Logo) */
@@ -373,7 +374,7 @@ p, span, a, label, .hero-line-4, .about-text, .project-desc, .quote, .author-rol
   100% { transform: translateX(0); }
 }
 
-/* Section 3: About Section (Reduced Gap with Section 4) */
+/* Section 3: About Section */
 .about-section.reduce-gap {
   padding: 5rem 2rem 2rem;
   max-width: 1280px;
@@ -444,7 +445,7 @@ p, span, a, label, .hero-line-4, .about-text, .project-desc, .quote, .author-rol
   margin-bottom: 2rem;
 }
 
-/* Section 4: Video Showcase (Tight Gap following Section 3) */
+/* Section 4: Video Showcase */
 .video-scroll-section.tight-gap {
   height: 180vh;
   position: relative;
