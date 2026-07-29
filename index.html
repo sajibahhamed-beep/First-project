@@ -11,19 +11,17 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Fixed Right-side Floating Contact Me Button with Container.png WhatsApp Icon -->
-  <a href="https://wa.me/09137053875" class="fixed-whatsapp-btn" target="_blank" rel="noopener">
-    <div class="fixed-wa-inner">
-      <img src="assets/container_whatsapp.png" alt="WhatsApp Container" class="fixed-wa-icon-large">
-      <span>Contact Me</span>
-    </div>
+  <!-- Fixed Bottom Right Corner Contact Me Button (WhatsApp icon + ONLY "Contact me") -->
+  <a href="https://wa.me/09137053875" class="fixed-whatsapp-bottom-right" target="_blank" rel="noopener">
+    <img src="assets/whatsapp_icon_user.png" alt="WhatsApp" class="wa-btn-icon">
+    <span>Contact me</span>
   </a>
 
   <!-- Navigation Header -->
   <header class="navbar">
     <div class="nav-container">
       <a href="#" class="logo">
-        <img src="assets/sajuxly_logo_exact.svg" alt="Sajuxly Logo" class="logo-img">
+        <img src="assets/sajuxly_white_logo.svg" alt="Sajuxly Logo" class="logo-img">
       </a>
       <nav class="nav-links">
         <a href="#home" class="nav-link active">Home</a>
@@ -35,7 +33,7 @@
     </div>
   </header>
 
-  <!-- Section 1: Hero Section (Bigger Button Text) -->
+  <!-- Section 1: Hero Section -->
   <section id="home" class="hero section-desktop-3">
     <div class="hero-container">
       <div class="hero-content">
@@ -62,7 +60,7 @@
     </div>
   </section>
 
-  <!-- Section 2: 3-Line Marquee (Bigger Screens, No Hovering Scale) -->
+  <!-- Section 2: 3-Line Marquee (Bigger Screens, No Hover Scale) -->
   <section class="marquee-multi-section">
     <!-- Line 1: Text + Circles (Regular Weight) -->
     <div class="marquee-row marquee-left">
@@ -92,7 +90,7 @@
       </div>
     </div>
 
-    <!-- Line 2: Mobile & Desktop Screens (Bigger 280px Height, Hover System Removed) -->
+    <!-- Line 2: Mobile & Desktop Screens (280px Height, No Hovering System) -->
     <div class="marquee-row marquee-screens-slow">
       <div class="marquee-track-slow">
         <div class="marquee-screen-group">
@@ -181,7 +179,7 @@
     </div>
   </section>
 
-  <!-- Section 4: Video Showcase (2-Stage Scroll Animation: Enters bottom -> Fits screen -> Shrinks & slides top) -->
+  <!-- Section 4: Video Showcase (Continuous Scroll Expansion Animation) -->
   <section class="video-scroll-section" id="video-section">
     <div class="video-scroll-sticky">
       <div class="video-scroll-container" id="video-scroll-container">
@@ -196,10 +194,10 @@
     </div>
   </section>
 
-  <!-- Section 5: "Industry experience and few of them." (Proven Success Section like Design Monks) -->
+  <!-- Section 5: Industry Experience Section Recreated -->
   <section id="portfolio" class="portfolio-section proven-success-section">
     <div class="section-header center">
-      <span class="section-tag proven-tag">PROVEN SUCCESS</span>
+      <span class="section-tag proven-tag">INDUSTRY EXPERIENCE</span>
       <h2 class="section-title">Industry experience and few of them.</h2>
       <p class="section-sub">Delivering research-backed UI/UX design systems that scale, convert, and solve complex user problems.</p>
     </div>
@@ -224,7 +222,7 @@
       </div>
     </div>
 
-    <!-- Interactive Category Filter Tabs -->
+    <!-- Category Filter Tabs -->
     <div class="portfolio-filter-tabs">
       <button class="filter-tab active" data-filter="all">All Projects</button>
       <button class="filter-tab" data-filter="travel">Travel</button>
@@ -239,7 +237,7 @@
       <article class="project-card proven-card" data-category="travel">
         <div class="project-info">
           <div class="card-badge-row">
-            <span class="category-tag">Travel & Booking</span>
+            <span class="category-tag">Travel</span>
             <span class="impact-pill">3.2x Booking Rate</span>
           </div>
           <h3>Easy Booking for Dream Trips</h3>
@@ -255,7 +253,7 @@
             </div>
           </div>
           <a href="#" class="btn btn-dark-pill">
-            View Case Study
+            View Details
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
         </div>
@@ -268,7 +266,7 @@
       <article class="project-card proven-card" data-category="restaurant">
         <div class="project-info">
           <div class="card-badge-row">
-            <span class="category-tag">Restaurant & Dining</span>
+            <span class="category-tag">Restaurant</span>
             <span class="impact-pill">+140% Orders</span>
           </div>
           <h3>Transform Your Dining</h3>
@@ -284,7 +282,7 @@
             </div>
           </div>
           <a href="#" class="btn btn-dark-pill">
-            View Case Study
+            View Details
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
         </div>
@@ -297,7 +295,7 @@
       <article class="project-card proven-card" data-category="saas">
         <div class="project-info">
           <div class="card-badge-row">
-            <span class="category-tag">SaaS & CleanTech</span>
+            <span class="category-tag">SaaS</span>
             <span class="impact-pill">4.8 User Rating</span>
           </div>
           <h3>Reducing Carbon Footprints</h3>
@@ -313,7 +311,7 @@
             </div>
           </div>
           <a href="#" class="btn btn-dark-pill">
-            View Case Study
+            View Details
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
         </div>
@@ -326,7 +324,7 @@
       <article class="project-card proven-card" data-category="healthcare">
         <div class="project-info">
           <div class="card-badge-row">
-            <span class="category-tag">Healthcare & Fitness</span>
+            <span class="category-tag">Healthcare</span>
             <span class="impact-pill">50k+ Active Members</span>
           </div>
           <h3>Revolutionize Fitness Goals</h3>
@@ -342,7 +340,7 @@
             </div>
           </div>
           <a href="#" class="btn btn-dark-pill">
-            View Case Study
+            View Details
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
         </div>
@@ -371,7 +369,7 @@
             </div>
           </div>
           <a href="#" class="btn btn-dark-pill">
-            View Case Study
+            View Details
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
         </div>
@@ -404,12 +402,12 @@
     </div>
   </section>
 
-  <!-- Testimonials Section -->
+  <!-- Testimonials Section (What Student's Say - 9 Reviews in 3x3 Grid, Smaller Title, No Stroke) -->
   <section class="testimonials-section">
     <div class="testimonials-header">
       <div>
-        <h2 class="section-title">What Student's Say</h2>
-        <p class="section-sub">Lorem Ipsum is simply dummy text of the printing.</p>
+        <h2 class="section-title student-title-sm">What Student's Say</h2>
+        <p class="section-sub">Real feedback from students and clients who mastered UI/UX design with Sajib.</p>
       </div>
       <div class="ratings-summary">
         <div class="rating-box">
@@ -424,11 +422,12 @@
       </div>
     </div>
 
-    <div class="testimonials-grid">
-      <div class="t-card">
-        <p class="quote">"Teachings of the great explore of truth, the master-builder of human happiness. no one rejects,dislikes, or avoids pleasure itself, pleasure itself"</p>
+    <div class="testimonials-grid-9">
+      <!-- Review 1 -->
+      <div class="t-card no-stroke">
+        <p class="quote">"Teachings of the great explorer of truth! Sajib's design breakdown transformed how I structure UI systems and client presentations."</p>
         <div class="author-info">
-          <img src="assets/figma_img_6.png" alt="Finlay Kirk Avatar" class="avatar-img">
+          <img src="assets/figma_img_6.png" alt="Finlay Kirk" class="avatar-img">
           <div>
             <h4 class="author-name">Finlay Kirk</h4>
             <span class="author-role">Web Developer</span>
@@ -436,10 +435,11 @@
         </div>
       </div>
 
-      <div class="t-card">
-        <p class="quote">"Complete account of the system and expound the actual Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots"</p>
+      <!-- Review 2 -->
+      <div class="t-card no-stroke">
+        <p class="quote">"Complete account of modern Figma workflows! The hands-on mentoring gave me the confidence to land my first senior product design role."</p>
         <div class="author-info">
-          <img src="assets/figma_img_7.png" alt="Dannette P. Cervantes Avatar" class="avatar-img">
+          <img src="assets/figma_img_7.png" alt="Dannette P. Cervantes" class="avatar-img">
           <div>
             <h4 class="author-name">Dannette P. Cervantes</h4>
             <span class="author-role">Web Design</span>
@@ -447,28 +447,101 @@
         </div>
       </div>
 
-      <div class="t-card">
-        <p class="quote">"There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour"</p>
+      <!-- Review 3 -->
+      <div class="t-card no-stroke">
+        <p class="quote">"Clear, structured, and extremely practical. Sajib doesn't just teach software; he teaches design thinking and problem solving."</p>
         <div class="author-info">
-          <img src="assets/figma_img_8.png" alt="Clara R. Altman Avatar" class="avatar-img">
+          <img src="assets/figma_img_8.png" alt="Clara R. Altman" class="avatar-img">
           <div>
             <h4 class="author-name">Clara R. Altman</h4>
             <span class="author-role">UI/UX Design</span>
           </div>
         </div>
       </div>
+
+      <!-- Review 4 -->
+      <div class="t-card no-stroke">
+        <p class="quote">"The best UI/UX course I have taken. The portfolio review sessions alone were worth 10x the investment!"</p>
+        <div class="author-info">
+          <img src="assets/figma_img_9.png" alt="Marcus Vance" class="avatar-img">
+          <div>
+            <h4 class="author-name">Marcus Vance</h4>
+            <span class="author-role">Product Designer</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Review 5 -->
+      <div class="t-card no-stroke">
+        <p class="quote">"Sajib's attention to detail, micro-interactions, and design systems is unmatched. Highly recommended for aspiring designers!"</p>
+        <div class="author-info">
+          <img src="assets/figma_img_10.png" alt="Sophia Chen" class="avatar-img">
+          <div>
+            <h4 class="author-name">Sophia Chen</h4>
+            <span class="author-role">Design Lead</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Review 6 -->
+      <div class="t-card no-stroke">
+        <p class="quote">"Learning auto-layout and complex component variants made my workflow 3x faster. Brilliant teaching style!"</p>
+        <div class="author-info">
+          <img src="assets/figma_img_11.png" alt="Liam O'Connor" class="avatar-img">
+          <div>
+            <h4 class="author-name">Liam O'Connor</h4>
+            <span class="author-role">Frontend Engineer</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Review 7 -->
+      <div class="t-card no-stroke">
+        <p class="quote">"Incredible insights on typography, spacing grids, and user psychology. Sajib makes complex UI concepts super easy to grasp."</p>
+        <div class="author-info">
+          <img src="assets/figma_img_12.png" alt="Elena Rostova" class="avatar-img">
+          <div>
+            <h4 class="author-name">Elena Rostova</h4>
+            <span class="author-role">UX Researcher</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Review 8 -->
+      <div class="t-card no-stroke">
+        <p class="quote">"The 1-on-1 mentorship helped me rebuild my portfolio from scratch. I booked 4 freelance clients within two weeks!"</p>
+        <div class="author-info">
+          <img src="assets/figma_img_6.png" alt="David Miller" class="avatar-img">
+          <div>
+            <h4 class="author-name">David Miller</h4>
+            <span class="author-role">Freelance Designer</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Review 9 -->
+      <div class="t-card no-stroke">
+        <p class="quote">"A game-changing learning experience! The practical real-world project briefs prepared me perfectly for high-growth tech startups."</p>
+        <div class="author-info">
+          <img src="assets/figma_img_7.png" alt="Amara Okafor" class="avatar-img">
+          <div>
+            <h4 class="author-name">Amara Okafor</h4>
+            <span class="author-role">Interaction Designer</span>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- FAQ Accordion Section -->
-  <section class="faq-section">
-    <div class="section-header center">
+  <!-- FAQ Accordion Section (Left-aligned Heading, Full Page Width Alignment, No Stroke) -->
+  <section class="faq-section full-page-align">
+    <div class="section-header left">
       <h2 class="section-title">Frequently Asked Questions</h2>
       <p class="section-sub">Find answers to common questions about our AI Project manager, enhances productivity, need more help? our team is here to assist you!</p>
     </div>
 
-    <div class="faq-accordion">
-      <div class="faq-item">
+    <div class="faq-accordion full-width">
+      <div class="faq-item no-stroke">
         <button class="faq-toggle">
           <span>How does the AI-powered project setup work?</span>
           <svg class="chevron" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
@@ -478,7 +551,7 @@
         </div>
       </div>
 
-      <div class="faq-item">
+      <div class="faq-item no-stroke">
         <button class="faq-toggle">
           <span>Can I integrate with other tools we already use?</span>
           <svg class="chevron" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
@@ -488,7 +561,7 @@
         </div>
       </div>
 
-      <div class="faq-item active">
+      <div class="faq-item active no-stroke">
         <button class="faq-toggle">
           <span>How long does it take to set up?</span>
           <svg class="chevron" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
@@ -498,7 +571,7 @@
         </div>
       </div>
 
-      <div class="faq-item">
+      <div class="faq-item no-stroke">
         <button class="faq-toggle">
           <span>Can I customize the platform for my industry?</span>
           <svg class="chevron" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
@@ -508,7 +581,7 @@
         </div>
       </div>
 
-      <div class="faq-item">
+      <div class="faq-item no-stroke">
         <button class="faq-toggle">
           <span>What kind of support do you offer?</span>
           <svg class="chevron" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
@@ -518,7 +591,7 @@
         </div>
       </div>
 
-      <div class="faq-item">
+      <div class="faq-item no-stroke">
         <button class="faq-toggle">
           <span>Is there a free trial?</span>
           <svg class="chevron" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
@@ -528,7 +601,7 @@
         </div>
       </div>
 
-      <div class="faq-item">
+      <div class="faq-item no-stroke">
         <button class="faq-toggle">
           <span>How often do you release updates?</span>
           <svg class="chevron" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
@@ -565,7 +638,7 @@
     <div class="footer-container">
       <div class="footer-brand">
         <a href="#" class="logo">
-          <img src="assets/sajuxly_logo_exact.svg" alt="Sajuxly Logo" class="logo-img">
+          <img src="assets/sajuxly_white_logo.svg" alt="Sajuxly Logo" class="logo-img">
         </a>
         <div class="contact-details">
           <p><strong>What's App:</strong> +0913-705-3875</p>
