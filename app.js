@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Section 4: Scroll-triggered Fullscreen Video Expansion Animation
+  // Section 4: Scroll-triggered Slide-Up & Fullscreen Video Expansion
   const videoContainer = document.getElementById('video-scroll-container');
   const videoSection = document.getElementById('video-section');
   const showcaseVideo = document.querySelector('.showcase-video');
@@ -24,12 +24,19 @@ document.addEventListener('DOMContentLoaded', () => {
       const sectionRect = videoSection.getBoundingClientRect();
       const windowHeight = window.innerHeight;
 
-      // Expand video container when scrolled into view
-      if (sectionRect.top <= windowHeight * 0.3 && sectionRect.bottom >= windowHeight * 0.3) {
-        videoContainer.classList.add('is-expanded');
+      // 1. Slide up from bottom when approaching
+      if (sectionRect.top <= windowHeight * 0.85) {
+        videoContainer.classList.add('is-visible');
         if (showcaseVideo && showcaseVideo.paused) {
           showcaseVideo.play().catch(() => {});
         }
+      } else {
+        videoContainer.classList.remove('is-visible');
+      }
+
+      // 2. Expand to full screen when centered in viewport
+      if (sectionRect.top <= windowHeight * 0.25 && sectionRect.bottom >= windowHeight * 0.25) {
+        videoContainer.classList.add('is-expanded');
       } else {
         videoContainer.classList.remove('is-expanded');
       }
