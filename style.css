@@ -10,6 +10,7 @@
   --btn-hire: #0099ff;
   --btn-demo-bg: #27272a;
   --btn-demo-border: #3f3f46;
+  --font-hero: 'Lato', sans-serif;
   --font-heading: 'Syne', sans-serif;
   --font-body: 'Plus Jakarta Sans', sans-serif;
 }
@@ -33,7 +34,7 @@ body {
 }
 
 /* Typography Helpers */
-h1, h2, h3, h4 {
+h2, h3, h4 {
   font-family: var(--font-heading);
   letter-spacing: -0.02em;
 }
@@ -42,7 +43,7 @@ h1, h2, h3, h4 {
   color: var(--cyan-primary);
 }
 
-/* Navbar - Exact Match to Screenshot */
+/* Navbar */
 .navbar {
   position: fixed;
   top: 0;
@@ -93,7 +94,7 @@ h1, h2, h3, h4 {
   color: var(--cyan-primary);
 }
 
-/* Hero Section - Exact Match to Screenshot */
+/* Hero Section - Exact Font Sizes & Lato Specifications */
 .hero {
   padding: 10rem 3rem 5rem;
   max-width: 1280px;
@@ -106,70 +107,99 @@ h1, h2, h3, h4 {
 
 .hero-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1.1fr 0.9fr;
   gap: 4rem;
   align-items: center;
   width: 100%;
 }
 
-.greeting-box {
-  margin-bottom: 1.5rem;
+.hero-text-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
-.hi-text {
-  color: #71717a;
-  font-size: 1.35rem;
+/* 1. "Hi!! I am" - 28px Lato */
+.hero-line-1 {
+  font-family: var(--font-hero);
+  font-size: 28px;
+  color: #8e8e93;
   font-weight: 400;
-  line-height: 1.3;
+  margin-bottom: 0.25rem;
+  line-height: 1.2;
 }
 
-.name-text {
-  font-size: 1.45rem;
-  line-height: 1.3;
+/* 2. "Sajib & I believe" - 32px Lato */
+.hero-line-2 {
+  font-family: var(--font-hero);
+  font-size: 32px;
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
 }
 
-.name-white {
+.name-bold {
   color: #ffffff;
   font-weight: 700;
 }
 
-.gray-text {
-  color: #71717a;
+.gray-part {
+  color: #8e8e93;
   font-weight: 400;
 }
 
+/* 3. "Design is a Language" - 52px Lato Black (900) */
 .hero-headline {
-  font-size: 3.6rem;
-  font-weight: 800;
+  font-family: var(--font-hero);
+  font-size: 52px;
+  font-weight: 900;
   line-height: 1.15;
   color: #ffffff;
   margin-bottom: 1.25rem;
+  display: inline-block;
+  white-space: nowrap;
 }
 
-.hero-description {
+/* 4. Paragraph - 20px Lato */
+.hero-line-4 {
+  font-family: var(--font-hero);
+  font-size: 20px;
+  font-weight: 400;
   color: #9ea3ae;
-  font-size: 1.1rem;
-  line-height: 1.5;
-  max-width: 440px;
+  line-height: 1.4;
+  max-width: 530px;
   margin-bottom: 2.25rem;
+}
+
+/* Summation of two buttons length is SAME as "Design is a Language" text length */
+.hero-actions-container {
+  width: 100%;
+  max-width: 520px; /* Exact rendered length of "Design is a Language" 52px Lato Black */
 }
 
 .hero-actions {
   display: flex;
-  gap: 1.25rem;
+  gap: 1rem;
+  width: 100%;
+}
+
+.hero-actions .btn {
+  flex: 1; /* Both buttons expand together to fill the exact length of the headline text */
+  text-align: center;
 }
 
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.85rem 2.25rem;
-  border-radius: 6px; /* Matching exact Figma button border radius */
-  font-weight: 600;
+  padding: 0.85rem 1.5rem;
+  border-radius: 6px;
+  font-family: var(--font-hero);
+  font-weight: 700;
   font-size: 0.95rem;
   text-decoration: none;
   transition: all 0.2s ease;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .btn-hire {
@@ -226,53 +256,32 @@ h1, h2, h3, h4 {
   width: 100%;
   max-width: 480px;
   aspect-ratio: 1 / 1;
-  border-radius: 50%;
-  overflow: hidden;
-  background: #0d0f14;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 0 80px rgba(0, 0, 0, 0.8);
 }
 
-.hero-img {
+.hero-img-exact {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
 }
 
-.floating-whatsapp {
+.floating-whatsapp-exact {
   position: absolute;
-  bottom: 25px;
-  right: 25px;
+  bottom: 10px;
+  right: 10px;
   z-index: 10;
-  background: #27272a;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0.5rem 1.15rem;
-  border-radius: 999px;
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  color: #ffffff;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.9rem;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  display: block;
   transition: transform 0.2s ease;
 }
 
-.floating-whatsapp:hover {
+.floating-whatsapp-exact:hover {
   transform: scale(1.05);
 }
 
-.wa-icon-wrapper {
-  background: #25d366;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
+.contact-badge-img {
+  height: 52px;
+  width: auto;
+  display: block;
 }
 
 /* Marquee */
@@ -858,6 +867,6 @@ h1, h2, h3, h4 {
   .hero-container, .about-container, .project-card, .blog-card, .footer-container, .cta-banner {
     grid-template-columns: 1fr;
   }
-  .hero-headline { font-size: 2.8rem; }
+  .hero-headline { font-size: 2.8rem; white-space: normal; }
   .nav-links, .cta-gallery { display: none; }
 }
