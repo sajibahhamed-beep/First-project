@@ -14,21 +14,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Play Button Click Handlers
-  const playBtn = document.querySelector('.play-btn');
-  if (playBtn) {
-    playBtn.addEventListener('click', () => {
-      alert('Playing showcase video: Groover Growth Story (11x Faster)');
+  // Section 4: Scroll-triggered Fullscreen Video Expansion Animation
+  const videoContainer = document.getElementById('video-scroll-container');
+  const videoSection = document.getElementById('video-section');
+  const showcaseVideo = document.querySelector('.showcase-video');
+
+  if (videoContainer && videoSection) {
+    window.addEventListener('scroll', () => {
+      const sectionRect = videoSection.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+
+      // Expand video container when scrolled into view
+      if (sectionRect.top <= windowHeight * 0.3 && sectionRect.bottom >= windowHeight * 0.3) {
+        videoContainer.classList.add('is-expanded');
+        if (showcaseVideo && showcaseVideo.paused) {
+          showcaseVideo.play().catch(() => {});
+        }
+      } else {
+        videoContainer.classList.remove('is-expanded');
+      }
     });
   }
 
-  // Smooth scroll active nav highlight
+  // Smooth scroll active nav link highlight
   const sections = document.querySelectorAll('section[id]');
   window.addEventListener('scroll', () => {
     const scrollY = window.pageYOffset;
     sections.forEach(current => {
       const sectionHeight = current.offsetHeight;
-      const sectionTop = current.offsetTop - 100;
+      const sectionTop = current.offsetTop - 120;
       const sectionId = current.getAttribute('id');
       const navLink = document.querySelector(`.nav-links a[href*=${sectionId}]`);
       if (navLink) {
