@@ -1,0 +1,129 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-dark: #090b0e;
+    --bg-nav: #080a0d;
+    --bg-card: rgba(18, 24, 38, 0.7);
+    --bg-card-border: rgba(255, 255, 255, 0.08);
+    --text-primary: #ffffff;
+    --text-secondary: #8e8e93;
+    --text-muted: #71717a;
+    --cyan-primary: #06ACFE;
+    --btn-primary: #06ACFE;
+    --btn-demo-bg: #27272a;
+    --btn-demo-border: #3f3f46;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-inter), sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* HEADINGS & BUTTON TYPOGRAPHY: LATO */
+  h1, h2, h3, h4, h5, h6,
+  .font-lato,
+  button,
+  .btn,
+  .stat-number,
+  .nav-link,
+  .meta-val,
+  .author-name,
+  .category-tag,
+  .impact-pill {
+    font-family: var(--font-lato), sans-serif;
+  }
+
+  /* BODY TYPOGRAPHY: INTER */
+  p, span, a, label,
+  .font-inter,
+  .about-text,
+  .project-desc,
+  .quote,
+  .author-role,
+  .section-sub {
+    font-family: var(--font-inter), sans-serif;
+  }
+}
+
+.highlight-cyan,
+.highlight-blue {
+  color: var(--cyan-primary);
+}
+
+/* FLOATING CONTACT ME BUTTON (Enlarged & attached to right edge) */
+.floating-contact-figma {
+  position: fixed;
+  bottom: 30px;
+  right: 0;
+  z-index: 9999;
+  text-decoration: none;
+  background: #1c1c1f;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-right: none;
+  border-radius: 9999px 0 0 9999px;
+  padding: 0.85rem 1.8rem 0.85rem 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.95rem;
+  box-shadow: -10px 15px 40px rgba(0, 0, 0, 0.85);
+  transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.floating-contact-figma:hover {
+  transform: translateX(-4px);
+  background: #27272a;
+  box-shadow: -12px 18px 45px rgba(0, 0, 0, 0.9);
+}
+
+/* MARQUEE KEYFRAMES */
+@keyframes marqueeLeft {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marqueeRight {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.animate-marquee-left {
+  display: flex;
+  width: 200%;
+  animation: marqueeLeft 25s linear infinite;
+}
+
+.animate-marquee-slow {
+  display: flex;
+  gap: 3rem;
+  width: max-content;
+  animation: marqueeLeft 45s linear infinite;
+}
+
+.animate-marquee-right {
+  display: flex;
+  width: 200%;
+  animation: marqueeRight 25s linear infinite;
+}
+
+/* 4PT / 8PT GRID BORDER RADIUS SYSTEM FOR ALL CARDS & ELEMENTS */
+.glass-card {
+  background: rgba(18, 24, 38, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border-radius: 24px;
+}
+
+.radius-4 { border-radius: 4px; }
+.radius-8 { border-radius: 8px; }
+.radius-12 { border-radius: 12px; }
+.radius-16 { border-radius: 16px; }
+.radius-24 { border-radius: 24px; }
+.radius-32 { border-radius: 32px; }
