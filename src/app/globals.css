@@ -83,34 +83,46 @@
   box-shadow: -12px 18px 45px rgba(0, 0, 0, 0.9);
 }
 
-/* MARQUEE KEYFRAMES */
+/* MARQUEE KEYFRAMES & PERFORMANCE OPTIMIZATIONS */
 @keyframes marqueeLeft {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
 }
 
 @keyframes marqueeRight {
-  0% { transform: translateX(-50%); }
-  100% { transform: translateX(0); }
+  0% { transform: translate3d(-50%, 0, 0); }
+  100% { transform: translate3d(0, 0, 0); }
 }
 
 .animate-marquee-left {
   display: flex;
-  width: 200%;
-  animation: marqueeLeft 25s linear infinite;
+  width: max-content;
+  will-change: transform;
+  animation: marqueeLeft 35s linear infinite;
+}
+
+.animate-marquee-right {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: marqueeRight 35s linear infinite;
 }
 
 .animate-marquee-slow {
   display: flex;
   gap: 3rem;
   width: max-content;
-  animation: marqueeLeft 45s linear infinite;
+  will-change: transform;
+  animation: marqueeLeft 55s linear infinite;
 }
 
-.animate-marquee-right {
-  display: flex;
-  width: 200%;
-  animation: marqueeRight 25s linear infinite;
+@media (max-width: 640px) {
+  .animate-marquee-left {
+    animation-duration: 25s;
+  }
+  .animate-marquee-right {
+    animation-duration: 25s;
+  }
 }
 
 /* 4PT / 8PT GRID BORDER RADIUS SYSTEM FOR ALL CARDS & ELEMENTS */

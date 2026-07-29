@@ -38,20 +38,25 @@ export default function MarqueeSection() {
   const [startX, setStartX] = useState(0);
   const [scrollLeftPos, setScrollLeftPos] = useState(0);
 
-  // Auto-scroll loop when not hovered and not dragging
+  // Auto-scroll loop using deltaTime for 100% consistent speed across all displays (60Hz / 120Hz)
   useEffect(() => {
     const container = scrollRef.current;
     if (!container) return;
 
     let animationFrameId: number;
+    let lastTime = performance.now();
 
-    const scroll = () => {
-      if (!isHovered && !isDragging) {
-        container.scrollLeft += 1; // 1px per frame speed
+    const scroll = (currentTime: number) => {
+      const deltaTime = (currentTime - lastTime) / 1000;
+      lastTime = currentTime;
 
-        // Reset scroll position when reaching half point for infinite loop
+      if (!isHovered && !isDragging && container) {
+        // 45px per second scrolling speed
+        container.scrollLeft += 45 * deltaTime;
+
+        // Seamless loop reset at exact half-width point
         if (container.scrollLeft >= container.scrollWidth / 2) {
-          container.scrollLeft = 0;
+          container.scrollLeft -= container.scrollWidth / 2;
         }
       }
       animationFrameId = requestAnimationFrame(scroll);
@@ -64,7 +69,7 @@ export default function MarqueeSection() {
     };
   }, [isHovered, isDragging]);
 
-  // Mouse Drag Events
+  // Mouse Drag Handlers
   const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
     if (!scrollRef.current) return;
     setIsDragging(true);
@@ -85,11 +90,11 @@ export default function MarqueeSection() {
     if (!isDragging || !scrollRef.current) return;
     e.preventDefault();
     const x = e.pageX - scrollRef.current.offsetLeft;
-    const walk = (x - startX) * 1.8; // Scroll multiplier
+    const walk = (x - startX) * 1.5;
     scrollRef.current.scrollLeft = scrollLeftPos - walk;
   };
 
-  // Touch Events for Mobile Dragging
+  // Touch Drag Handlers for Mobile Devices
   const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
     if (!scrollRef.current) return;
     setIsDragging(true);
@@ -104,29 +109,35 @@ export default function MarqueeSection() {
   const handleTouchMove = (e: TouchEvent<HTMLDivElement>) => {
     if (!isDragging || !scrollRef.current) return;
     const x = e.touches[0].pageX - scrollRef.current.offsetLeft;
-    const walk = (x - startX) * 1.8;
+    const walk = (x - startX) * 1.5;
     scrollRef.current.scrollLeft = scrollLeftPos - walk;
   };
 
   return (
-    <section className="py-14 bg-[#05070a] flex flex-col gap-10 overflow-hidden select-none">
+    <section className="py-8 sm:py-12 md:py-16 bg-[#05070a] flex flex-col gap-6 sm:gap-8 md:gap-10 overflow-hidden select-none relative">
       {/* Row 1: Left moving text marquee */}
       <div className="w-full overflow-hidden relative">
-        <div className="animate-marquee-left">
-          <div className="flex gap-10 items-center w-1/2 justify-around font-[var(--font-lato)] text-lg text-[#8e8e93] uppercase tracking-widest font-normal">
+        {/* Left & Right gradient fade overlays for seamless edge transitions */}
+        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 sm:w-16 md:w-28 bg-gradient-to-r from-[#05070a] to-transparent z-10" />
+        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 sm:w-16 md:w-28 bg-gradient-to-l from-[#05070a] to-transparent z-10" />
+
+        <div className="flex w-max animate-marquee-left hover:[animation-play-state:paused]">
+          {/* Track 1 */}
+          <div className="flex shrink-0 items-center gap-6 sm:gap-10 md:gap-14 pr-6 sm:pr-10 md:pr-14 font-[var(--font-lato)] text-xs sm:text-sm md:text-base lg:text-lg text-[#8e8e93] uppercase tracking-widest font-normal whitespace-nowrap">
             {marqueeItems.map((item, idx) => (
-              <span key={idx} className="flex items-center gap-10">
+              <span key={idx} className="flex items-center gap-6 sm:gap-10 md:gap-14">
                 <span>{item}</span>
                 <span className="text-[#06ACFE]">•</span>
               </span>
             ))}
           </div>
+          {/* Track 2 (Duplicate for seamless continuous loop) */}
           <div
-            className="flex gap-10 items-center w-1/2 justify-around font-[var(--font-lato)] text-lg text-[#8e8e93] uppercase tracking-widest font-normal"
+            className="flex shrink-0 items-center gap-6 sm:gap-10 md:gap-14 pr-6 sm:pr-10 md:pr-14 font-[var(--font-lato)] text-xs sm:text-sm md:text-base lg:text-lg text-[#8e8e93] uppercase tracking-widest font-normal whitespace-nowrap"
             aria-hidden="true"
           >
             {marqueeItems.map((item, idx) => (
-              <span key={`dup-${idx}`} className="flex items-center gap-10">
+              <span key={`dup-${idx}`} className="flex items-center gap-6 sm:gap-10 md:gap-14">
                 <span>{item}</span>
                 <span className="text-[#06ACFE]">•</span>
               </span>
@@ -135,8 +146,12 @@ export default function MarqueeSection() {
         </div>
       </div>
 
-      {/* Row 2: Middle Screen Images Row with Hidden Scrollbar & Dragging */}
-      <div className="w-full relative px-2">
+      {/* Row 2: Middle Screen Images Row with Responsive Heights, Gradient Masks & Dragging */}
+      <div className="w-full relative">
+        {/* Edge Gradient Fades for screen images */}
+        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-6 sm:w-12 md:w-24 bg-gradient-to-r from-[#05070a] to-transparent z-10" />
+        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-6 sm:w-12 md:w-24 bg-gradient-to-l from-[#05070a] to-transparent z-10" />
+
         <div
           ref={scrollRef}
           onMouseEnter={() => setIsHovered(true)}
@@ -147,7 +162,7 @@ export default function MarqueeSection() {
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
           onTouchMove={handleTouchMove}
-          className={`flex gap-8 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden py-4 cursor-grab ${
+          className={`flex gap-4 sm:gap-6 md:gap-8 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden py-2 sm:py-4 px-4 cursor-grab ${
             isDragging ? "cursor-grabbing active:scale-[0.99]" : ""
           } transition-transform duration-150`}
           style={{ scrollBehavior: isDragging ? "auto" : "smooth" }}
@@ -155,15 +170,16 @@ export default function MarqueeSection() {
           {doubleScreens.map((screen, idx) => (
             <div
               key={idx}
-              className="shrink-0 transition-transform duration-200 hover:scale-105"
+              className="shrink-0 transition-transform duration-300 hover:scale-105"
             >
               <Image
                 src={screen.src}
                 alt={screen.alt}
                 width={320}
-                height={260}
-                className="h-[260px] w-auto object-contain rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.6)] pointer-events-none"
-                style={{ width: "auto", height: "260px" }}
+                height={280}
+                className="h-[170px] xs:h-[200px] sm:h-[230px] md:h-[260px] lg:h-[280px] w-auto object-contain rounded-xl sm:rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.6)] pointer-events-none select-none"
+                style={{ width: "auto" }}
+                priority={idx < 4}
               />
             </div>
           ))}
@@ -172,21 +188,27 @@ export default function MarqueeSection() {
 
       {/* Row 3: Right moving text marquee */}
       <div className="w-full overflow-hidden relative">
-        <div className="animate-marquee-right">
-          <div className="flex gap-10 items-center w-1/2 justify-around font-[var(--font-lato)] text-lg text-[#8e8e93] uppercase tracking-widest font-normal">
+        {/* Left & Right gradient fade overlays */}
+        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 sm:w-16 md:w-28 bg-gradient-to-r from-[#05070a] to-transparent z-10" />
+        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 sm:w-16 md:w-28 bg-gradient-to-l from-[#05070a] to-transparent z-10" />
+
+        <div className="flex w-max animate-marquee-right hover:[animation-play-state:paused]">
+          {/* Track 1 */}
+          <div className="flex shrink-0 items-center gap-6 sm:gap-10 md:gap-14 pr-6 sm:pr-10 md:pr-14 font-[var(--font-lato)] text-xs sm:text-sm md:text-base lg:text-lg text-[#8e8e93] uppercase tracking-widest font-normal whitespace-nowrap">
             {marqueeItems.map((item, idx) => (
-              <span key={idx} className="flex items-center gap-10">
+              <span key={idx} className="flex items-center gap-6 sm:gap-10 md:gap-14">
                 <span>{item}</span>
                 <span className="text-[#06ACFE]">•</span>
               </span>
             ))}
           </div>
+          {/* Track 2 (Duplicate for seamless continuous loop) */}
           <div
-            className="flex gap-10 items-center w-1/2 justify-around font-[var(--font-lato)] text-lg text-[#8e8e93] uppercase tracking-widest font-normal"
+            className="flex shrink-0 items-center gap-6 sm:gap-10 md:gap-14 pr-6 sm:pr-10 md:pr-14 font-[var(--font-lato)] text-xs sm:text-sm md:text-base lg:text-lg text-[#8e8e93] uppercase tracking-widest font-normal whitespace-nowrap"
             aria-hidden="true"
           >
             {marqueeItems.map((item, idx) => (
-              <span key={`dup-${idx}`} className="flex items-center gap-10">
+              <span key={`dup-${idx}`} className="flex items-center gap-6 sm:gap-10 md:gap-14">
                 <span>{item}</span>
                 <span className="text-[#06ACFE]">•</span>
               </span>

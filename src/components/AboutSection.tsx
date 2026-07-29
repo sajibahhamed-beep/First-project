@@ -4,24 +4,24 @@ import { ArrowRight } from "lucide-react";
 
 export default function AboutSection() {
   return (
-    <section id="about" className="py-28 px-6 md:px-12 max-w-7xl mx-auto">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+    <section id="about" className="py-24 px-6 md:px-12 max-w-7xl mx-auto">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
         {/* Left Column: Extra Large Portrait Image */}
         <div className="lg:col-span-6 flex justify-center items-center">
-          <div className="w-full max-w-[880px] flex justify-center">
+          <div className="w-full max-w-[880px] flex justify-center items-center">
             <Image
               src="/assets/about_portrait.png"
               alt="Sajib - Designer"
               width={880}
               height={1000}
-              className="w-full h-auto max-h-[850px] object-contain block drop-shadow-[0_30px_60px_rgba(0,0,0,0.85)] transition-transform duration-300 lg:scale-130 origin-center"
+              className="w-full h-auto max-h-[850px] object-contain block drop-shadow-[0_30px_60px_rgba(0,0,0,0.85)] transition-transform duration-300 lg:scale-135 lg:-translate-y-12 origin-center"
               style={{ width: "100%", height: "auto" }}
             />
           </div>
         </div>
 
         {/* Right Column: Text content block */}
-        <div className="lg:col-span-6 flex flex-col items-start justify-between min-h-[580px] lg:py-4">
+        <div className="lg:col-span-6 flex flex-col items-start justify-between min-h-[540px]">
           <div>
             <span className="text-[#06ACFE] font-bold text-sm uppercase tracking-widest mb-4 block font-[var(--font-lato)]">
               About
