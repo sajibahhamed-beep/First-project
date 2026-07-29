@@ -11,13 +11,13 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Fixed Bottom Right Corner Contact Me Button (WhatsApp icon + ONLY "Contact me") -->
-  <a href="https://wa.me/09137053875" class="fixed-whatsapp-bottom-right" target="_blank" rel="noopener">
-    <img src="assets/whatsapp_icon_user.png" alt="WhatsApp" class="wa-btn-icon">
-    <span>Contact me</span>
+  <!-- Fixed Floating Contact Me Pill Button (Matching exact attached screenshot) -->
+  <a href="https://wa.me/09137053875" class="fixed-whatsapp-pill" target="_blank" rel="noopener">
+    <img src="assets/whatsapp_icon_user.png" alt="WhatsApp" class="wa-pill-icon">
+    <span class="wa-pill-text">Contact Me</span>
   </a>
 
-  <!-- Navigation Header -->
+  <!-- Navigation Header (Top Left Sajuxly White Logo) -->
   <header class="navbar">
     <div class="nav-container">
       <a href="#" class="logo">
@@ -60,9 +60,9 @@
     </div>
   </section>
 
-  <!-- Section 2: 3-Line Marquee (Bigger Screens, No Hover Scale) -->
+  <!-- Section 2: 3-Line Marquee (NO OVERLAPPING SCREENS, Flex-shrink: 0, Gap Spacing) -->
   <section class="marquee-multi-section">
-    <!-- Line 1: Text + Circles (Regular Weight) -->
+    <!-- Line 1: Text + Circles -->
     <div class="marquee-row marquee-left">
       <div class="marquee-track">
         <div class="marquee-content weight-regular">
@@ -90,32 +90,32 @@
       </div>
     </div>
 
-    <!-- Line 2: Mobile & Desktop Screens (280px Height, No Hovering System) -->
+    <!-- Line 2: Mobile & Desktop Screens (NO OVERLAP, DISTINCT GAP SPACING) -->
     <div class="marquee-row marquee-screens-slow">
       <div class="marquee-track-slow">
         <div class="marquee-screen-group">
-          <img src="assets/screen_8_168.png" alt="Triply iPad" class="screen-item-no-hover">
-          <img src="assets/screen_8_169.png" alt="Plate iPhone" class="screen-item-no-hover">
-          <img src="assets/screen_8_170.png" alt="TravelGo iPad" class="screen-item-no-hover">
-          <img src="assets/screen_8_171.png" alt="MobileWallet iPhone" class="screen-item-no-hover">
-          <img src="assets/screen_8_172.png" alt="NextSpace iPad" class="screen-item-no-hover">
-          <img src="assets/screen_8_173.png" alt="VPN iPhone" class="screen-item-no-hover">
-          <img src="assets/screen_8_174.png" alt="Nekchat iPad" class="screen-item-no-hover">
+          <img src="assets/screen_8_168.png" alt="Triply iPad" class="screen-item-no-overlap">
+          <img src="assets/screen_8_169.png" alt="Plate iPhone" class="screen-item-no-overlap">
+          <img src="assets/screen_8_170.png" alt="TravelGo iPad" class="screen-item-no-overlap">
+          <img src="assets/screen_8_171.png" alt="MobileWallet iPhone" class="screen-item-no-overlap">
+          <img src="assets/screen_8_172.png" alt="NextSpace iPad" class="screen-item-no-overlap">
+          <img src="assets/screen_8_173.png" alt="VPN iPhone" class="screen-item-no-overlap">
+          <img src="assets/screen_8_174.png" alt="Nekchat iPad" class="screen-item-no-overlap">
           <img src="assets/screen_8_175.png" alt="Wallet iPhone" class="screen-item-no-hover">
-          <img src="assets/screen_8_176.png" alt="MonksWizard iPad" class="screen-item-no-hover">
-          <img src="assets/screen_8_177.png" alt="TravelBooking iPhone" class="screen-item-no-hover">
+          <img src="assets/screen_8_176.png" alt="MonksWizard iPad" class="screen-item-no-overlap">
+          <img src="assets/screen_8_177.png" alt="TravelBooking iPhone" class="screen-item-no-overlap">
         </div>
         <div class="marquee-screen-group" aria-hidden="true">
-          <img src="assets/screen_8_168.png" alt="Triply iPad" class="screen-item-no-hover">
-          <img src="assets/screen_8_169.png" alt="Plate iPhone" class="screen-item-no-hover">
-          <img src="assets/screen_8_170.png" alt="TravelGo iPad" class="screen-item-no-hover">
-          <img src="assets/screen_8_171.png" alt="MobileWallet iPhone" class="screen-item-no-hover">
-          <img src="assets/screen_8_172.png" alt="NextSpace iPad" class="screen-item-no-hover">
-          <img src="assets/screen_8_173.png" alt="VPN iPhone" class="screen-item-no-hover">
-          <img src="assets/screen_8_174.png" alt="Nekchat iPad" class="screen-item-no-hover">
-          <img src="assets/screen_8_175.png" alt="Wallet iPhone" class="screen-item-no-hover">
-          <img src="assets/screen_8_176.png" alt="MonksWizard iPad" class="screen-item-no-hover">
-          <img src="assets/screen_8_177.png" alt="TravelBooking iPhone" class="screen-item-no-hover">
+          <img src="assets/screen_8_168.png" alt="Triply iPad" class="screen-item-no-overlap">
+          <img src="assets/screen_8_169.png" alt="Plate iPhone" class="screen-item-no-overlap">
+          <img src="assets/screen_8_170.png" alt="TravelGo iPad" class="screen-item-no-overlap">
+          <img src="assets/screen_8_171.png" alt="MobileWallet iPhone" class="screen-item-no-overlap">
+          <img src="assets/screen_8_172.png" alt="NextSpace iPad" class="screen-item-no-overlap">
+          <img src="assets/screen_8_173.png" alt="VPN iPhone" class="screen-item-no-overlap">
+          <img src="assets/screen_8_174.png" alt="Nekchat iPad" class="screen-item-no-overlap">
+          <img src="assets/screen_8_175.png" alt="Wallet iPhone" class="screen-item-no-overlap">
+          <img src="assets/screen_8_176.png" alt="MonksWizard iPad" class="screen-item-no-overlap">
+          <img src="assets/screen_8_177.png" alt="TravelBooking iPhone" class="screen-item-no-overlap">
         </div>
       </div>
     </div>
@@ -149,8 +149,8 @@
     </div>
   </section>
 
-  <!-- Section 3: About Section (Mysuit.png) -->
-  <section id="about" class="about-section">
+  <!-- Section 3: About Section (Reduced gap with Section 4) -->
+  <section id="about" class="about-section reduce-gap">
     <div class="about-container">
       <div class="about-visual">
         <div class="mysuit-wrapper">
@@ -179,8 +179,8 @@
     </div>
   </section>
 
-  <!-- Section 4: Video Showcase (Continuous Scroll Expansion Animation) -->
-  <section class="video-scroll-section" id="video-section">
+  <!-- Section 4: Video Showcase (Smooth scroll expansion directly following Section 3) -->
+  <section class="video-scroll-section tight-gap" id="video-section">
     <div class="video-scroll-sticky">
       <div class="video-scroll-container" id="video-scroll-container">
         <video class="showcase-video" autoplay muted loop playsinline poster="assets/video_banner.png">
@@ -194,7 +194,7 @@
     </div>
   </section>
 
-  <!-- Section 5: Industry Experience Section Recreated -->
+  <!-- Section 5: Industry Experience Section -->
   <section id="portfolio" class="portfolio-section proven-success-section">
     <div class="section-header center">
       <span class="section-tag proven-tag">INDUSTRY EXPERIENCE</span>
@@ -202,7 +202,7 @@
       <p class="section-sub">Delivering research-backed UI/UX design systems that scale, convert, and solve complex user problems.</p>
     </div>
 
-    <!-- Proven Success Metric Highlights Bar -->
+    <!-- Proven Metrics Bar -->
     <div class="proven-metrics-bar">
       <div class="proven-metric">
         <span class="p-num">98%</span>
@@ -402,7 +402,7 @@
     </div>
   </section>
 
-  <!-- Testimonials Section (What Student's Say - 9 Reviews in 3x3 Grid, Smaller Title, No Stroke) -->
+  <!-- Testimonials Section (9 Reviews in 3x3 Grid, Smaller Title, No Stroke) -->
   <section class="testimonials-section">
     <div class="testimonials-header">
       <div>
@@ -533,7 +533,7 @@
     </div>
   </section>
 
-  <!-- FAQ Accordion Section (Left-aligned Heading, Full Page Width Alignment, No Stroke) -->
+  <!-- FAQ Accordion Section -->
   <section class="faq-section full-page-align">
     <div class="section-header left">
       <h2 class="section-title">Frequently Asked Questions</h2>

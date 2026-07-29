@@ -45,46 +45,46 @@ p, span, a, label, .hero-line-4, .about-text, .project-desc, .quote, .author-rol
   color: var(--cyan-primary);
 }
 
-/* RECREATED FIXED BOTTOM-RIGHT CORNER CONTACT ME BUTTON (WhatsApp Icon + ONLY "Contact me") */
-.fixed-whatsapp-bottom-right {
+/* FLOATING CONTACT ME PILL BUTTON (Matching exact attached screenshot) */
+.fixed-whatsapp-pill {
   position: fixed;
   bottom: 30px;
-  right: 25px;
+  right: 30px;
   z-index: 9999;
   text-decoration: none;
-  background: #1c1c1e;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #222226;
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 999px;
-  padding: 0.65rem 1.4rem 0.65rem 0.85rem;
+  padding: 0.75rem 1.65rem 0.75rem 0.85rem;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.65);
-  transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+  gap: 0.85rem;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.85);
+  transition: transform 0.25s ease, background 0.25s ease;
 }
 
-.wa-btn-icon {
-  width: 36px;
-  height: 36px;
+.wa-pill-icon {
+  width: 40px;
+  height: 40px;
   object-fit: contain;
-  filter: drop-shadow(0 2px 8px rgba(37, 211, 102, 0.45));
+  filter: drop-shadow(0 2px 8px rgba(37, 211, 102, 0.5));
 }
 
-.fixed-whatsapp-bottom-right span {
+.wa-pill-text {
   color: #ffffff;
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   letter-spacing: -0.01em;
+  white-space: nowrap;
 }
 
-.fixed-whatsapp-bottom-right:hover {
+.fixed-whatsapp-pill:hover {
   transform: translateY(-4px);
-  background: #27272a;
-  box-shadow: 0 14px 40px rgba(0,0,0,0.8);
+  background: #2a2a2e;
 }
 
-/* Navbar */
+/* Navbar (Top Left White Sajuxly Logo) */
 .navbar {
   position: fixed;
   top: 0;
@@ -112,7 +112,7 @@ p, span, a, label, .hero-line-4, .about-text, .project-desc, .quote, .author-rol
 }
 
 .logo-img {
-  height: 38px;
+  height: 40px;
   width: auto;
   display: block;
 }
@@ -284,13 +284,13 @@ p, span, a, label, .hero-line-4, .about-text, .project-desc, .quote, .author-rol
   display: block;
 }
 
-/* Section 2: 3-Line Marquee Section */
+/* Section 2: 3-Line Marquee Section (NO OVERLAPPING SCREENS) */
 .marquee-multi-section {
   padding: 3.5rem 0;
   background: #05070a;
   display: flex;
   flex-direction: column;
-  gap: 2.25rem;
+  gap: 2.5rem;
   overflow: hidden;
 }
 
@@ -312,28 +312,31 @@ p, span, a, label, .hero-line-4, .about-text, .project-desc, .quote, .author-rol
 
 .marquee-screens-slow .marquee-track-slow {
   display: flex;
-  width: 200%;
+  gap: 3rem;
+  width: max-content;
   animation: marqueeLeft 45s linear infinite;
 }
 
 .marquee-screen-group {
   display: flex;
-  gap: 2rem;
+  gap: 3rem;
   align-items: center;
-  width: 50%;
-  justify-content: space-around;
+  flex-shrink: 0;
 }
 
-.screen-item-no-hover {
-  height: 280px;
+/* Zero Overlap Screen Items */
+.screen-item-no-overlap {
+  height: 260px;
   width: auto;
   object-fit: contain;
-  border-radius: 18px;
+  flex-shrink: 0;
+  display: block;
+  border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.6);
   transform: none !important;
 }
 
-.screen-item-no-hover:hover {
+.screen-item-no-overlap:hover {
   transform: none !important;
 }
 
@@ -370,9 +373,9 @@ p, span, a, label, .hero-line-4, .about-text, .project-desc, .quote, .author-rol
   100% { transform: translateX(0); }
 }
 
-/* Section 3: About Section */
-.about-section {
-  padding: 7rem 2rem;
+/* Section 3: About Section (Reduced Gap with Section 4) */
+.about-section.reduce-gap {
+  padding: 5rem 2rem 2rem;
   max-width: 1280px;
   margin: 0 auto;
 }
@@ -441,10 +444,12 @@ p, span, a, label, .hero-line-4, .about-text, .project-desc, .quote, .author-rol
   margin-bottom: 2rem;
 }
 
-/* Section 4: Video Showcase */
-.video-scroll-section {
-  height: 250vh;
+/* Section 4: Video Showcase (Tight Gap following Section 3) */
+.video-scroll-section.tight-gap {
+  height: 180vh;
   position: relative;
+  margin-top: 0;
+  padding-top: 0;
 }
 
 .video-scroll-sticky {
@@ -498,7 +503,7 @@ p, span, a, label, .hero-line-4, .about-text, .project-desc, .quote, .author-rol
   color: var(--text-primary);
 }
 
-/* Section 5: Industry Experience Section Recreated */
+/* Section 5: Industry Experience Section */
 .portfolio-section.proven-success-section {
   padding: 8rem 2rem 6rem;
   max-width: 1280px;
@@ -730,7 +735,7 @@ p, span, a, label, .hero-line-4, .about-text, .project-desc, .quote, .author-rol
   font-weight: 700;
 }
 
-/* Testimonials (9 Reviews in 3x3 Grid, Smaller Title, No Stroke) */
+/* Testimonials */
 .testimonials-section {
   padding: 6rem 2rem;
   max-width: 1280px;
@@ -744,7 +749,6 @@ p, span, a, label, .hero-line-4, .about-text, .project-desc, .quote, .author-rol
   margin-bottom: 3rem;
 }
 
-/* Reduced Title Size */
 .student-title-sm {
   font-size: 1.85rem !important;
   font-weight: 800;
@@ -778,7 +782,6 @@ p, span, a, label, .hero-line-4, .about-text, .project-desc, .quote, .author-rol
   font-size: 0.8rem;
 }
 
-/* 9 Reviews Grid Layout (3x3) */
 .testimonials-grid-9 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -792,7 +795,6 @@ p, span, a, label, .hero-line-4, .about-text, .project-desc, .quote, .author-rol
   border-radius: 18px;
 }
 
-/* Remove Stroke */
 .no-stroke {
   border: none !important;
   box-shadow: 0 8px 30px rgba(0,0,0,0.35);
@@ -828,7 +830,7 @@ p, span, a, label, .hero-line-4, .about-text, .project-desc, .quote, .author-rol
   font-size: 0.85rem;
 }
 
-/* FAQ Accordion Section (Left-aligned Heading, Full Page Alignment, No Stroke) */
+/* FAQ Accordion Section */
 .faq-section.full-page-align {
   padding: 6rem 2rem;
   max-width: 1280px;
