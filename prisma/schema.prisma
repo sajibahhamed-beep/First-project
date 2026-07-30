@@ -1,0 +1,201 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         String   @default("ADMIN")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Project {
+  id           String     @id @default(uuid())
+  slug         String     @unique
+  title        String
+  shortDesc    String
+  category     String
+  categoryTag  String
+  tagColor     String     @default("text-[#06ACFE]")
+  impactPill   String
+  pages        String
+  duration     String
+  role         String
+  tools        String
+  liveUrl      String?
+  githubUrl    String?
+  behanceUrl   String?
+  dribbbleUrl  String?
+  figmaUrl     String?
+  featured     Boolean    @default(false)
+  published    Boolean    @default(true)
+  displayOrder Int        @default(0)
+  heroImage    String
+  caseStudy    CaseStudy?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model CaseStudy {
+  id                String   @id @default(uuid())
+  projectId         String   @unique
+  project           Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  subtitle          String
+  summary           String
+  overview          String
+  problem           String
+  researchImage     String?
+  researchText      String?
+  wireframeImage    String?
+  wireframeText     String?
+  designSystemImage String?
+  designSystemText  String?
+  solution          String
+  results           String   // JSON string of string array
+  screens           String   // JSON string of image URLs
+  teamSize          String?
+  timeline          String?
+  technologies      String?
+  seoTitle          String?
+  seoDescription    String?
+}
+
+model Blog {
+  id          String   @id @default(uuid())
+  slug        String   @unique
+  title       String
+  excerpt     String
+  content     String   // Markdown / HTML Content
+  category    String
+  tags        String   // Comma separated tags
+  coverImage  String
+  readTime    String
+  published   Boolean  @default(true)
+  featured    Boolean  @default(false)
+  seoTitle    String?
+  seoDesc     String?
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Skill {
+  id           String  @id @default(uuid())
+  name         String
+  category     String  // Main Skills, Technical, Tools, Design
+  level        Int     @default(90) // Percentage 1-100
+  icon         String?
+  displayOrder Int     @default(0)
+}
+
+model Service {
+  id           String  @id @default(uuid())
+  title        String
+  description  String
+  icon         String?
+  displayOrder Int     @default(0)
+}
+
+model Experience {
+  id           String  @id @default(uuid())
+  role         String
+  company      String?
+  date         String
+  desc         String
+  skills       String  // JSON array
+  displayOrder Int     @default(0)
+}
+
+model Education {
+  id          String  @id @default(uuid())
+  degree      String
+  institution String
+  year        String
+  description String?
+}
+
+model Certificate {
+  id     String  @id @default(uuid())
+  title  String
+  issuer String
+  date   String
+  link   String?
+  image  String?
+}
+
+model Award {
+  id           String  @id @default(uuid())
+  title        String
+  organization String
+  year         String
+  description  String?
+}
+
+model Client {
+  id      String  @id @default(uuid())
+  name    String
+  logo    String
+  website String?
+}
+
+model Testimonial {
+  id      String  @id @default(uuid())
+  name    String
+  role    String
+  avatar  String
+  rating  Int     @default(5)
+  quote   String
+  project String?
+}
+
+model Faq {
+  id           String  @id @default(uuid())
+  question     String
+  answer       String
+  category     String?
+  displayOrder Int     @default(0)
+}
+
+model ContactMessage {
+  id             String   @id @default(uuid())
+  fullName       String
+  email          String
+  whatsapp       String?
+  projectDetails String
+  status         String   @default("UNREAD") // UNREAD, READ, ARCHIVED, REPLIED
+  createdAt      DateTime @default(now())
+}
+
+model Resume {
+  id            String   @id @default(uuid())
+  title         String   // e.g., UX Resume, Product Resume
+  filename      String
+  fileUrl       String
+  fileSize      String
+  downloadCount Int      @default(0)
+  isDefault     Boolean  @default(false)
+  updatedAt     DateTime @updatedAt
+}
+
+model Media {
+  id         String   @id @default(uuid())
+  filename   String
+  fileUrl    String
+  mimeType   String
+  size       Int
+  dimensions String?
+  createdAt  DateTime @default(now())
+}
+
+model SiteSetting {
+  key   String @id
+  value String
+}

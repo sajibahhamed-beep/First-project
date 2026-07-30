@@ -1,18 +1,56 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Phone, Mail, MapPin } from "lucide-react";
 
+interface SocialPlatform {
+  id: string;
+  name: string;
+  url: string;
+  enabled: boolean;
+}
+
+const defaultPlatforms: SocialPlatform[] = [
+  { id: "whatsapp", name: "WhatsApp", url: "https://wa.me/+8801775551325", enabled: true },
+  { id: "facebook", name: "Facebook", url: "https://facebook.com/sajib", enabled: true },
+  { id: "youtube", name: "YouTube", url: "https://youtube.com/@sajib", enabled: true },
+  { id: "instagram", name: "Instagram", url: "https://instagram.com/sajib", enabled: true },
+  { id: "linkedin", name: "LinkedIn", url: "https://linkedin.com/in/sajib", enabled: true },
+  { id: "dribbble", name: "Dribbble", url: "https://dribbble.com/sajib", enabled: true },
+  { id: "pinterest", name: "Pinterest", url: "https://pinterest.com/sajib", enabled: true },
+  { id: "behance", name: "Behance", url: "https://behance.net/sajib", enabled: true },
+  { id: "twitter", name: "Twitter (X)", url: "https://twitter.com/sajib", enabled: true },
+];
+
+const iconFileMap: Record<string, string> = {
+  whatsapp: "Listitem → Link-7.png",
+  facebook: "Listitem → Link.png",
+  youtube: "Listitem → Link-1.png",
+  instagram: "Listitem → Link-2.png",
+  linkedin: "Listitem → Link-3.png",
+  dribbble: "Listitem → Link-4.png",
+  pinterest: "Listitem → Link-5.png",
+  behance: "Listitem → Link-6.png",
+  twitter: "Listitem → Link-7.png",
+};
+
 export default function Footer() {
-  const socialIcons = [
-    "Listitem → Link-7.png",
-    "Listitem → Link.png",
-    "Listitem → Link-1.png",
-    "Listitem → Link-2.png",
-    "Listitem → Link-3.png",
-    "Listitem → Link-4.png",
-    "Listitem → Link-5.png",
-    "Listitem → Link-6.png",
-  ];
+  const [platforms, setPlatforms] = useState<SocialPlatform[]>(defaultPlatforms);
+
+  useEffect(() => {
+    fetch("/api/social")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.platforms) {
+          setPlatforms(data.platforms);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const activePlatforms = platforms.filter((p) => p.enabled && p.url);
 
   return (
     <footer
@@ -22,7 +60,7 @@ export default function Footer() {
     >
       {/* Equal 4-Column Grid Layout */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12 mb-16 relative z-10">
-        {/* Column 1: Sajuxly Logo, Tagline, & Social Icons */}
+        {/* Column 1: Sajuxly Logo, Tagline, & Dynamic Active Social Icons */}
         <div>
           <Link href="/" className="inline-block mb-4">
             <Image
@@ -40,27 +78,31 @@ export default function Footer() {
             Crafting research-backed UI/UX design systems, web platforms &amp; high-converting mobile experiences.
           </p>
 
-          {/* Social Icons row below logo */}
+          {/* Active Social Icons row below logo */}
           <div className="flex items-center gap-3 flex-wrap">
-            {socialIcons.map((filename, index) => (
-              <a
-                key={index}
-                href="#"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block hover:scale-110 transition-transform duration-200"
-                aria-label={`Social Link ${index + 1}`}
-              >
-                <Image
-                  src={`/assets/${filename}`}
-                  alt={`Social Icon ${index + 1}`}
-                  width={42}
-                  height={42}
-                  className="w-10.5 h-10.5 object-contain block"
-                  style={{ width: "42px", height: "42px" }}
-                />
-              </a>
-            ))}
+            {activePlatforms.map((platform) => {
+              const iconAsset = iconFileMap[platform.id] || "Listitem → Link.png";
+              return (
+                <a
+                  key={platform.id}
+                  href={platform.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block hover:scale-110 transition-transform duration-200"
+                  aria-label={platform.name}
+                  title={platform.name}
+                >
+                  <Image
+                    src={`/assets/${iconAsset}`}
+                    alt={platform.name}
+                    width={42}
+                    height={42}
+                    className="w-10.5 h-10.5 object-contain block"
+                    style={{ width: "42px", height: "42px" }}
+                  />
+                </a>
+              );
+            })}
           </div>
         </div>
 

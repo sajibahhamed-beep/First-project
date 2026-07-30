@@ -1,9 +1,13 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 interface Project {
   id: string;
+  slug?: string;
   category: string;
   categoryTag: string;
   tagColor: string;
@@ -18,84 +22,86 @@ interface Project {
   imageAlt: string;
 }
 
+const defaultProjects: Project[] = [
+  {
+    id: "triply",
+    slug: "triply",
+    category: "travel",
+    categoryTag: "Travel",
+    tagColor: "text-[#06ACFE]",
+    previewGradient: "from-blue-500/20 via-blue-600/10 to-blue-900/5",
+    previewBorder: "border-none",
+    impactPill: "3.2x Booking Rate",
+    title: "Easy Booking for Dream Trips",
+    desc: "Triply is a hassle-free & effective tour solution for travelers. It's an all-inclusive booking and planning website that helps people make their dream trips easier.",
+    pages: "40+",
+    duration: "2.5 Months",
+    image: "/assets/project_triply_exact.png",
+    imageAlt: "Triply Travel App",
+  },
+  {
+    id: "plate",
+    slug: "plate",
+    category: "restaurant",
+    categoryTag: "Restaurant",
+    tagColor: "text-orange-500",
+    previewGradient: "from-orange-500/20 via-orange-600/10 to-orange-900/5",
+    previewBorder: "border-none",
+    impactPill: "+140% Orders",
+    title: "Transform Your Dining",
+    desc: "At Plate, we bring you a handpicked selection of premium restaurants that offer not just meals, but memorable dining experiences you'll cherish.",
+    pages: "40+",
+    duration: "5 Months",
+    image: "/assets/project_plate_exact.png",
+    imageAlt: "Plate Restaurant App",
+  },
+  {
+    id: "yenex",
+    slug: "yenex",
+    category: "saas",
+    categoryTag: "SaaS",
+    tagColor: "text-amber-400",
+    previewGradient: "from-amber-500/20 via-amber-600/10 to-amber-900/5",
+    previewBorder: "border-none",
+    impactPill: "4.8 User Rating",
+    title: "Reducing Carbon Footprints",
+    desc: "Yenex is a smart and sustainable energy platform. It empowers users with distributed energy solutions to reduce carbon footprints effortlessly.",
+    pages: "40+",
+    duration: "5 Months",
+    image: "/assets/project_yenex_exact.png",
+    imageAlt: "Yenex Carbon Energy SaaS",
+  },
+];
+
 export default function IndustryExperienceSection() {
-  const projects: Project[] = [
-    {
-      id: "triply",
-      category: "travel",
-      categoryTag: "Travel",
-      tagColor: "text-[#06ACFE]",
-      previewGradient: "from-blue-500/20 via-blue-600/10 to-blue-900/5",
-      previewBorder: "border-none",
-      impactPill: "3.2x Booking Rate",
-      title: "Easy Booking for Dream Trips",
-      desc: "Triply is a hassle-free & effective tour solution for travelers. It's an all-inclusive booking and planning website that helps people make their dream trips easier.",
-      pages: "40+",
-      duration: "2.5 Months",
-      image: "/assets/project_triply_exact.png",
-      imageAlt: "Triply Travel App",
-    },
-    {
-      id: "plate",
-      category: "restaurant",
-      categoryTag: "Restaurant",
-      tagColor: "text-orange-500",
-      previewGradient: "from-orange-500/20 via-orange-600/10 to-orange-900/5",
-      previewBorder: "border-none",
-      impactPill: "+140% Orders",
-      title: "Transform Your Dining",
-      desc: "At Plate, we bring you a handpicked selection of premium restaurants that offer not just meals, but memorable dining experiences you'll cherish.",
-      pages: "40+",
-      duration: "5 Months",
-      image: "/assets/project_plate_exact.png",
-      imageAlt: "Plate Restaurant App",
-    },
-    {
-      id: "yenex",
-      category: "saas",
-      categoryTag: "SaaS",
-      tagColor: "text-amber-400",
-      previewGradient: "from-amber-500/20 via-amber-600/10 to-amber-900/5",
-      previewBorder: "border-none",
-      impactPill: "4.8 User Rating",
-      title: "Reducing Carbon Footprints",
-      desc: "Yenex is a smart and sustainable energy platform. It empowers users with distributed energy solutions to reduce carbon footprints effortlessly.",
-      pages: "40+",
-      duration: "5 Months",
-      image: "/assets/project_yenex_exact.png",
-      imageAlt: "Yenex Carbon Energy SaaS",
-    },
-    {
-      id: "fitmate",
-      category: "healthcare",
-      categoryTag: "Healthcare",
-      tagColor: "text-pink-500",
-      previewGradient: "from-pink-500/20 via-pink-600/10 to-pink-900/5",
-      previewBorder: "border-none",
-      impactPill: "50k+ Active Members",
-      title: "Revolutionize Fitness Goals",
-      desc: "Fitmate transforms fitness in Australia with flexible gym access, personalized schedules, and AI-driven insights to solve common workout limitations for users.",
-      pages: "40+",
-      duration: "5 Months",
-      image: "/assets/project_fitmate_exact.png",
-      imageAlt: "Fitmate Healthcare App",
-    },
-    {
-      id: "zantrik",
-      category: "vehicle",
-      categoryTag: "Vehicle Maintenance Platform",
-      tagColor: "text-teal-400",
-      previewGradient: "from-teal-500/20 via-teal-600/10 to-teal-900/5",
-      previewBorder: "border-none",
-      impactPill: "+85% Engagement",
-      title: "Simplifying Vehicle Care",
-      desc: "Zantrik is an innovative vehicle maintenance app. We revamped it with a fresh design, gamification, and intuitive features to boost user engagement.",
-      pages: "40+",
-      duration: "5 Months",
-      image: "/assets/project_zantrik_exact.png",
-      imageAlt: "Zantrik Vehicle App",
-    },
-  ];
+  const [projects, setProjects] = useState<Project[]>(defaultProjects);
+
+  useEffect(() => {
+    fetch("/api/admin/projects")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.projects && data.projects.length > 0) {
+          const mapped = data.projects.map((p: any) => ({
+            id: p.id,
+            slug: p.slug,
+            category: p.category || "travel",
+            categoryTag: p.categoryTag || "General",
+            tagColor: p.tagColor || "text-[#06ACFE]",
+            previewGradient: "from-blue-500/20 via-blue-600/10 to-blue-900/5",
+            previewBorder: "border-none",
+            impactPill: p.impactPill || "3.2x Rate",
+            title: p.title,
+            desc: p.shortDesc,
+            pages: p.pages || "40+",
+            duration: p.duration || "2 Months",
+            image: p.heroImage || "/assets/project_triply_exact.png",
+            imageAlt: p.title,
+          }));
+          setProjects(mapped);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   return (
     <section id="portfolio" className="py-24 px-6 md:px-12 max-w-7xl mx-auto">
@@ -113,7 +119,7 @@ export default function IndustryExperienceSection() {
         </p>
       </div>
 
-      {/* Projects List with presentation animations & no card stroke */}
+      {/* Projects List */}
       <div className="flex flex-col gap-10">
         {projects.map((project) => (
           <article
@@ -161,7 +167,7 @@ export default function IndustryExperienceSection() {
 
               {/* View Case Study Button */}
               <Link
-                href={`/portfolio/${project.id}`}
+                href={`/portfolio/${project.slug || project.id}`}
                 className="inline-flex items-center justify-center gap-3 px-12 py-3.5 rounded-[4px] bg-[#181d28] text-white hover:bg-[#06ACFE] transition-all duration-300 font-bold font-[var(--font-lato)] text-base shadow-md w-full sm:w-auto min-w-[220px]"
               >
                 View Case Study

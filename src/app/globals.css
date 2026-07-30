@@ -98,6 +98,7 @@
   display: flex;
   width: max-content;
   will-change: transform;
+  backface-visibility: hidden;
   animation: marqueeLeft 35s linear infinite;
 }
 
@@ -105,7 +106,16 @@
   display: flex;
   width: max-content;
   will-change: transform;
+  backface-visibility: hidden;
   animation: marqueeRight 35s linear infinite;
+}
+
+.animate-marquee-images-right {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  backface-visibility: hidden;
+  animation: marqueeRight 45s linear infinite;
 }
 
 .animate-marquee-slow {
@@ -113,6 +123,7 @@
   gap: 3rem;
   width: max-content;
   will-change: transform;
+  backface-visibility: hidden;
   animation: marqueeLeft 55s linear infinite;
 }
 
@@ -122,6 +133,9 @@
   }
   .animate-marquee-right {
     animation-duration: 25s;
+  }
+  .animate-marquee-images-right {
+    animation-duration: 30s;
   }
 }
 

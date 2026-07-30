@@ -1,8 +1,37 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 export default function AboutSection() {
+  const [aboutData, setAboutData] = useState({
+    aboutHeading: "Sajib is a Designer Based in Dhaka, Bangladesh",
+    aboutProjectsCount: "50+",
+    aboutExperienceYears: "3 Years+",
+    aboutParagraph: "Crafting intuitive, high-impact digital experiences through user-centered research, thoughtful strategy, and pixel-perfect execution. Specializing in mobile apps, SaaS platforms, and design systems for startups and forward-thinking brands.",
+    aboutPortrait: "/assets/about_portrait.png",
+  });
+
+  useEffect(() => {
+    fetch("/api/admin/homepage")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.settings) {
+          const s = data.settings;
+          setAboutData((prev) => ({
+            aboutHeading: s.aboutHeading || prev.aboutHeading,
+            aboutProjectsCount: s.aboutProjectsCount || prev.aboutProjectsCount,
+            aboutExperienceYears: s.aboutExperienceYears || prev.aboutExperienceYears,
+            aboutParagraph: s.aboutParagraph || prev.aboutParagraph,
+            aboutPortrait: s.aboutPortrait || prev.aboutPortrait,
+          }));
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <section id="about" className="py-24 px-6 md:px-12 max-w-7xl mx-auto">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
@@ -10,7 +39,7 @@ export default function AboutSection() {
         <div className="lg:col-span-6 flex justify-center items-center">
           <div className="w-full max-w-[880px] flex justify-center items-center">
             <Image
-              src="/assets/about_portrait.png"
+              src={aboutData.aboutPortrait}
               alt="Sajib - Designer"
               width={880}
               height={1000}
@@ -28,15 +57,14 @@ export default function AboutSection() {
             </span>
 
             <h2 className="text-3xl md:text-2xl lg:text-[46px] font-extrabold font-[var(--font-lato)] leading-[1.15] text-white mb-8">
-              Sajib is a <span className="text-[#06ACFE]">Designer</span> Based in
-              Dhaka, Bangladesh
+              {aboutData.aboutHeading}
             </h2>
 
             {/* Stats Block */}
             <div className="flex gap-16 mb-8">
               <div>
                 <span className="text-4xl sm:text-xl font-extrabold font-[var(--font-lato)] text-white block mb-1">
-                  50+
+                  {aboutData.aboutProjectsCount}
                 </span>
                 <span className="text-[#8e8e93] text-sm font-medium font-[var(--font-inter)]">
                   Projects
@@ -44,7 +72,7 @@ export default function AboutSection() {
               </div>
               <div>
                 <span className="text-4xl sm:text-xl font-extrabold font-[var(--font-lato)] text-white block mb-1">
-                  3 Years+
+                  {aboutData.aboutExperienceYears}
                 </span>
                 <span className="text-[#8e8e93] text-sm font-medium font-[var(--font-inter)]">
                   As a Designer
@@ -53,10 +81,7 @@ export default function AboutSection() {
             </div>
 
             <p className="text-[#8e8e93] text-lg sm:text-xl font-[var(--font-inter)] leading-relaxed mb-10 text-justify">
-              Crafting intuitive, high-impact digital experiences through
-              user-centered research, thoughtful strategy, and pixel-perfect
-              execution. Specializing in mobile apps, SaaS platforms, and design
-              systems for startups and forward-thinking brands.
+              {aboutData.aboutParagraph}
             </p>
           </div>
 
