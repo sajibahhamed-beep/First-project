@@ -4,6 +4,9 @@ import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Save, Sparkles, FolderKanban } from "lucide-react";
+import ImageUpload from "@/components/admin/ImageUpload";
+import MultiImageUpload from "@/components/admin/MultiImageUpload";
+import SectionBlockBuilder, { ContentSection } from "@/components/admin/SectionBlockBuilder";
 
 export default function NewProjectPage() {
   const router = useRouter();
@@ -16,7 +19,7 @@ export default function NewProjectPage() {
     shortDesc: "",
     category: "travel",
     categoryTag: "Travel & Hospitality",
-    impactPill: "3.2x Conversion Rate",
+    impactPill: "3.2x Booking Rate",
     pages: "40+ Screens",
     duration: "2.5 Months",
     role: "Lead UI/UX Designer",
@@ -30,16 +33,34 @@ export default function NewProjectPage() {
     featured: false,
     published: true,
     displayOrder: 0,
-    // Case Study Details
+    // Case Study Meta
     subtitle: "",
-    summary: "",
-    overview: "",
     problem: "",
     solution: "",
     resultsText: "",
+    screens: [
+      "/assets/figma_img_23.png",
+      "/assets/figma_img_24.png",
+      "/assets/screen_8_168.png",
+    ],
     teamSize: "4 Designers, 6 Engineers",
     technologies: "Figma, Next.js, Tailwind CSS",
   });
+
+  const [sections, setSections] = useState<ContentSection[]>([
+    {
+      id: "sec_1",
+      title: "Executive Summary & Overview",
+      description: "Explain project scope, overview, and primary objectives...",
+      image: "",
+    },
+    {
+      id: "sec_2",
+      title: "01. UX Research & Discovery",
+      description: "Qualitative research, user interviews, and competitor audits...",
+      image: "/assets/figma_img_23.png",
+    },
+  ]);
 
   const generateSlug = (title: string) => {
     return title
@@ -71,12 +92,12 @@ export default function NewProjectPage() {
       ...formData,
       caseStudy: {
         subtitle: formData.subtitle || formData.title,
-        summary: formData.summary || formData.shortDesc,
-        overview: formData.overview || formData.shortDesc,
+        summary: formData.shortDesc,
+        overview: JSON.stringify(sections),
         problem: formData.problem || "Initial problem description.",
         solution: formData.solution || "High impact UI/UX solution.",
         results: resultsArray,
-        screens: [formData.heroImage],
+        screens: formData.screens.length > 0 ? formData.screens : [formData.heroImage],
         teamSize: formData.teamSize,
         technologies: formData.technologies,
       },
@@ -117,10 +138,10 @@ export default function NewProjectPage() {
           </Link>
           <div>
             <h1 className="text-2xl font-extrabold font-[var(--font-lato)] text-white">
-              Create New Project & Case Study
+              Create New Project &amp; Case Study
             </h1>
             <p className="text-xs text-[#8e8e93]">
-              Add a new case study to your portfolio showcase
+              Add a new case study with dynamic content section blocks
             </p>
           </div>
         </div>
@@ -189,10 +210,10 @@ export default function NewProjectPage() {
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
               <label className="block text-xs font-bold uppercase text-[#8e8e93] mb-2 font-[var(--font-lato)]">
-                Category
+                Category Tag
               </label>
               <input
                 type="text"
@@ -219,29 +240,30 @@ export default function NewProjectPage() {
                 className="w-full px-4 py-3 bg-[#090b0e] border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:border-[#06ACFE]"
               />
             </div>
-
-            <div>
-              <label className="block text-xs font-bold uppercase text-[#8e8e93] mb-2 font-[var(--font-lato)]">
-                Hero Image Asset Path
-              </label>
-              <input
-                type="text"
-                value={formData.heroImage}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, heroImage: e.target.value }))
-                }
-                placeholder="/assets/project_triply_exact.png"
-                className="w-full px-4 py-3 bg-[#090b0e] border border-white/10 rounded-xl text-white text-sm font-mono focus:outline-none focus:border-[#06ACFE]"
-              />
-            </div>
           </div>
+
+          {/* Project Hero Image Upload Control */}
+          <ImageUpload
+            label="Project Main Showcase / Hero Image"
+            value={formData.heroImage}
+            onChange={(url) =>
+              setFormData((prev) => ({ ...prev, heroImage: url }))
+            }
+          />
         </div>
 
-        {/* Case Study Details */}
+        {/* Dynamic Section Builder with Add Button at Top Right */}
+        <SectionBlockBuilder
+          label="Project Description &amp; Case Study Sections"
+          sections={sections}
+          onChange={(newSections) => setSections(newSections)}
+        />
+
+        {/* Case Study Extra Meta */}
         <div className="p-6 rounded-2xl bg-[#121826]/70 border border-white/10 space-y-6">
           <h2 className="text-lg font-bold font-[var(--font-lato)] text-[#06ACFE] flex items-center gap-2">
             <Sparkles className="w-5 h-5" />
-            <span>Figma Case Study Content</span>
+            <span>Problem, Results &amp; Screen Mockups</span>
           </h2>
 
           <div>
@@ -264,7 +286,7 @@ export default function NewProjectPage() {
               The Problem Statement
             </label>
             <textarea
-              rows={4}
+              rows={3}
               value={formData.problem}
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, problem: e.target.value }))
@@ -276,22 +298,7 @@ export default function NewProjectPage() {
 
           <div>
             <label className="block text-xs font-bold uppercase text-[#8e8e93] mb-2 font-[var(--font-lato)]">
-              The Design Solution
-            </label>
-            <textarea
-              rows={4}
-              value={formData.solution}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, solution: e.target.value }))
-              }
-              placeholder="Explain your design & technical solution..."
-              className="w-full px-4 py-3 bg-[#090b0e] border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:border-[#06ACFE]"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold uppercase text-[#8e8e93] mb-2 font-[var(--font-lato)]">
-              Key Results & Metrics (One per line)
+              Key Results &amp; Metrics (One per line)
             </label>
             <textarea
               rows={4}
@@ -303,6 +310,15 @@ export default function NewProjectPage() {
               className="w-full px-4 py-3 bg-[#090b0e] border border-white/10 rounded-xl text-white text-sm font-mono focus:outline-none focus:border-[#06ACFE]"
             />
           </div>
+
+          {/* Multi-Image Upload for Screen Mockup Gallery */}
+          <MultiImageUpload
+            label="Detailed Screen Mockups Gallery"
+            values={formData.screens}
+            onChange={(urls) =>
+              setFormData((prev) => ({ ...prev, screens: urls }))
+            }
+          />
         </div>
 
         {/* Submit Bar */}

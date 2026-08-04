@@ -85,7 +85,7 @@ export default function AdminProjectsPage() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-extrabold font-[var(--font-lato)] text-white">
-            Projects & Case Studies
+            Projects &amp; Case Studies
           </h1>
           <p className="text-xs text-[#8e8e93] font-[var(--font-inter)] mt-1">
             Manage your portfolio projects, Figma case studies, images, and links
@@ -122,9 +122,9 @@ export default function AdminProjectsPage() {
             className="bg-[#090b0e] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-[#06ACFE]"
           >
             <option value="">All Categories</option>
-            <option value="travel">Travel & Hospitality</option>
-            <option value="restaurant">Restaurant & Dining</option>
-            <option value="saas">SaaS & Financial</option>
+            <option value="travel">Travel &amp; Hospitality</option>
+            <option value="restaurant">Restaurant &amp; Dining</option>
+            <option value="saas">SaaS &amp; Financial</option>
             <option value="mobile">Mobile Apps</option>
           </select>
         </div>
@@ -189,16 +189,32 @@ export default function AdminProjectsPage() {
                       </span>
                     </td>
 
+                    {/* Switch Toggle for Published Status */}
                     <td className="py-4 px-6">
                       <button
+                        type="button"
                         onClick={() => toggleStatus(proj, "published")}
-                        className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${
-                          proj.published
-                            ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                            : "bg-zinc-500/20 text-zinc-400 border border-zinc-500/30"
-                        }`}
+                        className="flex items-center gap-2.5 group focus:outline-none"
+                        title={proj.published ? "Click to set as Draft" : "Click to Publish"}
                       >
-                        {proj.published ? "Published" : "Draft"}
+                        <div
+                          className={`w-11 h-6 rounded-full p-0.5 transition-colors duration-300 flex items-center ${
+                            proj.published ? "bg-[#06ACFE]" : "bg-zinc-700"
+                          }`}
+                        >
+                          <div
+                            className={`w-5 h-5 rounded-full bg-white shadow-md transform transition-transform duration-300 ${
+                              proj.published ? "translate-x-5" : "translate-x-0"
+                            }`}
+                          />
+                        </div>
+                        <span
+                          className={`text-xs font-bold font-[var(--font-lato)] ${
+                            proj.published ? "text-[#06ACFE]" : "text-[#8e8e93]"
+                          }`}
+                        >
+                          {proj.published ? "Published" : "Draft"}
+                        </span>
                       </button>
                     </td>
 

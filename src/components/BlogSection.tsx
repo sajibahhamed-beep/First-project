@@ -26,7 +26,7 @@ export default function BlogSection() {
   });
 
   useEffect(() => {
-    fetch("/api/admin/blog")
+    fetch("/api/blog")
       .then((res) => res.json())
       .then((data) => {
         if (data.blogs && data.blogs.length > 0) {

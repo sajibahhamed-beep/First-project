@@ -12,6 +12,7 @@ interface BlogItem {
   excerpt: string;
   category: string;
   readTime: string;
+  coverImage?: string;
   published: boolean;
   featured: boolean;
   createdAt: string;
@@ -89,7 +90,7 @@ export default function AdminBlogPage() {
           className="px-5 py-3 rounded-xl bg-[#06ACFE] hover:bg-[#0098e6] text-white font-bold text-sm flex items-center gap-2 transition-all shadow-[0_4px_15px_rgba(6,172,254,0.35)] shrink-0"
         >
           <Plus className="w-4 h-4" />
-          <span>Write New Article</span>
+          <span>Add New Blog</span>
         </Link>
       </div>
 
@@ -136,13 +137,27 @@ export default function AdminBlogPage() {
                 {blogs.map((b) => (
                   <tr key={b.id} className="hover:bg-white/[0.02] transition-colors">
                     <td className="py-4 px-6">
-                      <div>
-                        <h3 className="font-bold text-white font-[var(--font-lato)] line-clamp-1">
-                          {b.title}
-                        </h3>
-                        <span className="text-xs text-[#8e8e93] font-mono">
-                          /blog/{b.slug}
-                        </span>
+                      <div className="flex items-center gap-4">
+                        <div className="w-16 h-12 rounded-lg bg-[#090b0e] overflow-hidden border border-white/10 shrink-0 relative flex items-center justify-center">
+                          {b.coverImage && b.coverImage.trim() !== "" ? (
+                            <Image
+                              src={b.coverImage}
+                              alt={b.title}
+                              fill
+                              className="object-cover"
+                            />
+                          ) : (
+                            <FileText className="w-5 h-5 text-white/30" />
+                          )}
+                        </div>
+                        <div>
+                          <h3 className="font-bold text-white font-[var(--font-lato)] line-clamp-1">
+                            {b.title}
+                          </h3>
+                          <span className="text-xs text-[#8e8e93] font-mono">
+                            /blog/{b.slug}
+                          </span>
+                        </div>
                       </div>
                     </td>
 
@@ -154,27 +169,42 @@ export default function AdminBlogPage() {
                       {b.readTime}
                     </td>
 
+                    {/* Switch Toggle for Published Status */}
                     <td className="py-4 px-6">
                       <button
+                        type="button"
                         onClick={() => toggleStatus(b, "published")}
-                        className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${
-                          b.published
-                            ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-                            : "bg-zinc-500/20 text-zinc-400 border border-zinc-500/30"
-                        }`}
+                        className="flex items-center gap-2.5 group focus:outline-none"
+                        title={b.published ? "Click to set as Draft" : "Click to Publish"}
                       >
-                        {b.published ? "Published" : "Draft"}
+                        <div
+                          className={`w-11 h-6 rounded-full p-0.5 transition-colors duration-300 flex items-center ${
+                            b.published ? "bg-[#06ACFE]" : "bg-zinc-700"
+                          }`}
+                        >
+                          <div
+                            className={`w-5 h-5 rounded-full bg-white shadow-md transform transition-transform duration-300 ${
+                              b.published ? "translate-x-5" : "translate-x-0"
+                            }`}
+                          />
+                        </div>
+                        <span
+                          className={`text-xs font-bold font-[var(--font-lato)] ${
+                            b.published ? "text-[#06ACFE]" : "text-[#8e8e93]"
+                          }`}
+                        >
+                          {b.published ? "Published" : "Draft"}
+                        </span>
                       </button>
                     </td>
 
                     <td className="py-4 px-6">
                       <button
                         onClick={() => toggleStatus(b, "featured")}
-                        className={`p-2 rounded-lg transition-all ${
-                          b.featured
+                        className={`p-2 rounded-lg transition-all ${b.featured
                             ? "bg-amber-500/20 text-amber-400 border border-amber-500/30"
                             : "text-[#8e8e93] hover:text-white"
-                        }`}
+                          }`}
                       >
                         <Star className="w-4 h-4 fill-current" />
                       </button>

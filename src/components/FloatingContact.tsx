@@ -12,12 +12,12 @@ export default function FloatingContact() {
       <Image
         src="/assets/Container.png"
         alt="WhatsApp"
-        width={48}
-        height={48}
-        className="w-12 h-12 object-contain filter drop-shadow-[0_2px_8px_rgba(37,211,102,0.5)]"
-        style={{ width: "48px", height: "48px" }}
+        width={40}
+        height={40}
+        className="w-10 h-10 object-contain filter drop-shadow-[0_2px_8px_rgba(37,211,102,0.5)]"
+        style={{ width: "40px", height: "40px" }}
       />
-      <span className="text-white font-[var(--font-lato)] font-bold text-xl tracking-tight whitespace-nowrap">
+      <span className="text-white font-[var(--font-lato)] font-bold text-lg tracking-tight whitespace-nowrap">
         Contact Me
       </span>
     </a>

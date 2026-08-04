@@ -97,7 +97,7 @@ export default function TestimonialsSection() {
           </p>
         </div>
 
-        {/* Clean ratings summary without background rectangle or border stroke */}
+        {/* Clean ratings summary */}
         <div className="flex items-center gap-8">
           <div className="text-center">
             <span className="text-2xl font-extrabold font-[var(--font-lato)] text-white block">
@@ -122,12 +122,12 @@ export default function TestimonialsSection() {
         </div>
       </div>
 
-      {/* Testimonial cards without any stroke */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* Testimonial cards grid - enhanced size magnification on hover */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-2">
         {testimonials.map((item) => (
           <div
             key={item.id}
-            className="bg-[#121826]/70 p-7 rounded-[4px] shadow-[0_8px_30px_rgba(0,0,0,0.35)] flex flex-col justify-between"
+            className="bg-[#121826]/70 p-8 rounded-[4px] shadow-[0_8px_30px_rgba(0,0,0,0.35)] flex flex-col justify-between transition-transform duration-300 ease-out transform hover:scale-110 sm:hover:scale-112 hover:z-30 relative cursor-pointer"
           >
             <p className="text-[#8e8e93] text-sm font-[var(--font-inter)] leading-relaxed mb-6 italic">
               {item.quote}
@@ -146,7 +146,9 @@ export default function TestimonialsSection() {
                 <h4 className="text-base font-bold font-[var(--font-lato)] text-white">
                   {item.name}
                 </h4>
-                <span className="text-[#71717a] text-xs font-[var(--font-inter)]">{item.role}</span>
+                <span className="text-[#71717a] text-xs font-[var(--font-inter)]">
+                  {item.role}
+                </span>
               </div>
             </div>
           </div>

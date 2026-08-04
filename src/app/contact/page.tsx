@@ -141,7 +141,7 @@ export default function ContactPage() {
                   Message Sent to Sajib!
                 </h3>
                 <p className="text-[#8e8e93] text-base font-[var(--font-inter)] mb-6">
-                  Thank you for reaching out! Your message and project details have been sent to <span className="text-white font-medium">sajibahhamed0@gmail.com</span>. Sajib will get back to you within 24 hours.
+                  Thank you for reaching out! Your message and goal details have been sent to <span className="text-white font-medium">sajibahhamed0@gmail.com</span>. Sajib will get back to you within 24 hours.
                 </p>
                 <button
                   onClick={() => {

@@ -3,7 +3,10 @@
 import { useState, useEffect, FormEvent, use } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Save, Sparkles, FolderKanban, Trash2 } from "lucide-react";
+import { ArrowLeft, Save, Sparkles, FolderKanban } from "lucide-react";
+import ImageUpload from "@/components/admin/ImageUpload";
+import MultiImageUpload from "@/components/admin/MultiImageUpload";
+import SectionBlockBuilder, { ContentSection } from "@/components/admin/SectionBlockBuilder";
 
 export default function EditProjectPage({
   params,
@@ -37,16 +40,17 @@ export default function EditProjectPage({
     featured: false,
     published: true,
     displayOrder: 0,
-    // Case Study Details
+    // Case Study Meta
     subtitle: "",
-    summary: "",
-    overview: "",
     problem: "",
     solution: "",
     resultsText: "",
+    screens: [] as string[],
     teamSize: "",
     technologies: "",
   });
+
+  const [sections, setSections] = useState<ContentSection[]>([]);
 
   useEffect(() => {
     fetch(`/api/admin/projects/${id}`)
@@ -55,6 +59,7 @@ export default function EditProjectPage({
         if (data.project) {
           const p = data.project;
           const cs = p.caseStudy || {};
+
           let resText = "";
           if (cs.results) {
             try {
@@ -62,6 +67,16 @@ export default function EditProjectPage({
               if (Array.isArray(arr)) resText = arr.join("\n");
             } catch {
               resText = cs.results;
+            }
+          }
+
+          let scrsArr: string[] = [];
+          if (cs.screens) {
+            try {
+              const arr = JSON.parse(cs.screens);
+              if (Array.isArray(arr)) scrsArr = arr;
+            } catch {
+              if (typeof cs.screens === "string") scrsArr = [cs.screens];
             }
           }
 
@@ -86,14 +101,35 @@ export default function EditProjectPage({
             published: p.published ?? true,
             displayOrder: p.displayOrder || 0,
             subtitle: cs.subtitle || "",
-            summary: cs.summary || "",
-            overview: cs.overview || "",
             problem: cs.problem || "",
             solution: cs.solution || "",
             resultsText: resText,
+            screens: scrsArr,
             teamSize: cs.teamSize || "",
             technologies: cs.technologies || "",
           });
+
+          // Parse overview sections
+          if (cs.overview) {
+            try {
+              const parsed = JSON.parse(cs.overview);
+              if (Array.isArray(parsed)) {
+                setSections(parsed);
+              } else {
+                setSections([
+                  { id: "sec_1", title: "Executive Summary", description: cs.overview, image: "" },
+                ]);
+              }
+            } catch {
+              setSections([
+                { id: "sec_1", title: "Executive Summary", description: cs.overview, image: "" },
+              ]);
+            }
+          } else {
+            setSections([
+              { id: "sec_1", title: "Executive Summary", description: p.shortDesc || "", image: "" },
+            ]);
+          }
         }
         setIsLoading(false);
       })
@@ -117,11 +153,12 @@ export default function EditProjectPage({
       ...formData,
       caseStudy: {
         subtitle: formData.subtitle || formData.title,
-        summary: formData.summary || formData.shortDesc,
-        overview: formData.overview || formData.shortDesc,
+        summary: formData.shortDesc,
+        overview: JSON.stringify(sections),
         problem: formData.problem,
         solution: formData.solution,
         results: resultsArray,
+        screens: formData.screens,
         teamSize: formData.teamSize,
         technologies: formData.technologies,
       },
@@ -174,7 +211,7 @@ export default function EditProjectPage({
               Edit Project — {formData.title}
             </h1>
             <p className="text-xs text-[#8e8e93]">
-              Update project showcase, details, case study sections, and external links
+              Update project showcase, details, section blocks, and uploaded media
             </p>
           </div>
         </div>
@@ -191,7 +228,7 @@ export default function EditProjectPage({
         <div className="p-6 rounded-2xl bg-[#121826]/70 border border-white/10 space-y-6">
           <h2 className="text-lg font-bold font-[var(--font-lato)] text-[#06ACFE] flex items-center gap-2">
             <FolderKanban className="w-5 h-5" />
-            <span>Basic Details & Links</span>
+            <span>Basic Details &amp; Showcase</span>
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -241,10 +278,10 @@ export default function EditProjectPage({
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
               <label className="block text-xs font-bold uppercase text-[#8e8e93] mb-2 font-[var(--font-lato)]">
-                Category
+                Category Tag
               </label>
               <input
                 type="text"
@@ -269,28 +306,30 @@ export default function EditProjectPage({
                 className="w-full px-4 py-3 bg-[#090b0e] border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:border-[#06ACFE]"
               />
             </div>
-
-            <div>
-              <label className="block text-xs font-bold uppercase text-[#8e8e93] mb-2 font-[var(--font-lato)]">
-                Hero Image Asset Path
-              </label>
-              <input
-                type="text"
-                value={formData.heroImage}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, heroImage: e.target.value }))
-                }
-                className="w-full px-4 py-3 bg-[#090b0e] border border-white/10 rounded-xl text-white text-sm font-mono focus:outline-none focus:border-[#06ACFE]"
-              />
-            </div>
           </div>
+
+          {/* Project Hero Image Upload Control */}
+          <ImageUpload
+            label="Project Main Showcase / Hero Image"
+            value={formData.heroImage}
+            onChange={(url) =>
+              setFormData((prev) => ({ ...prev, heroImage: url }))
+            }
+          />
         </div>
 
-        {/* Case Study Details */}
+        {/* Dynamic Section Builder with Add Button at Top Right */}
+        <SectionBlockBuilder
+          label="Project Description &amp; Case Study Sections"
+          sections={sections}
+          onChange={(newSections) => setSections(newSections)}
+        />
+
+        {/* Case Study Meta */}
         <div className="p-6 rounded-2xl bg-[#121826]/70 border border-white/10 space-y-6">
           <h2 className="text-lg font-bold font-[var(--font-lato)] text-[#06ACFE] flex items-center gap-2">
             <Sparkles className="w-5 h-5" />
-            <span>Figma Case Study Breakdown</span>
+            <span>Problem, Results &amp; Screen Mockups</span>
           </h2>
 
           <div>
@@ -312,7 +351,7 @@ export default function EditProjectPage({
               The Problem Statement
             </label>
             <textarea
-              rows={4}
+              rows={3}
               value={formData.problem}
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, problem: e.target.value }))
@@ -323,21 +362,7 @@ export default function EditProjectPage({
 
           <div>
             <label className="block text-xs font-bold uppercase text-[#8e8e93] mb-2 font-[var(--font-lato)]">
-              The Design Solution
-            </label>
-            <textarea
-              rows={4}
-              value={formData.solution}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, solution: e.target.value }))
-              }
-              className="w-full px-4 py-3 bg-[#090b0e] border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:border-[#06ACFE]"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold uppercase text-[#8e8e93] mb-2 font-[var(--font-lato)]">
-              Key Results & Metrics (One per line)
+              Key Results &amp; Metrics (One per line)
             </label>
             <textarea
               rows={4}
@@ -348,6 +373,15 @@ export default function EditProjectPage({
               className="w-full px-4 py-3 bg-[#090b0e] border border-white/10 rounded-xl text-white text-sm font-mono focus:outline-none focus:border-[#06ACFE]"
             />
           </div>
+
+          {/* Multi-Image Upload for Screen Mockup Gallery */}
+          <MultiImageUpload
+            label="Detailed Screen Mockups Gallery"
+            values={formData.screens}
+            onChange={(urls) =>
+              setFormData((prev) => ({ ...prev, screens: urls }))
+            }
+          />
         </div>
 
         {/* Submit Bar */}

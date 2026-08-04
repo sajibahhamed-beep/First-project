@@ -4,6 +4,8 @@ import { useState, useEffect, FormEvent, use } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Save, FileText } from "lucide-react";
+import ImageUpload from "@/components/admin/ImageUpload";
+import SectionBlockBuilder, { ContentSection } from "@/components/admin/SectionBlockBuilder";
 
 export default function EditBlogPage({
   params,
@@ -21,7 +23,6 @@ export default function EditBlogPage({
     title: "",
     slug: "",
     excerpt: "",
-    content: "",
     category: "",
     tags: "",
     coverImage: "",
@@ -30,12 +31,47 @@ export default function EditBlogPage({
     featured: false,
   });
 
+  const [sections, setSections] = useState<ContentSection[]>([]);
+
   useEffect(() => {
     fetch(`/api/admin/blog/${id}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.blog) {
-          setFormData(data.blog);
+          const b = data.blog;
+          setFormData({
+            title: b.title || "",
+            slug: b.slug || "",
+            excerpt: b.excerpt || "",
+            category: b.category || "",
+            tags: b.tags || "",
+            coverImage: b.coverImage || "",
+            readTime: b.readTime || "",
+            published: b.published ?? true,
+            featured: b.featured ?? false,
+          });
+
+          // Parse content sections
+          if (b.content) {
+            try {
+              const parsed = JSON.parse(b.content);
+              if (Array.isArray(parsed)) {
+                setSections(parsed);
+              } else {
+                setSections([
+                  { id: "sec_1", title: "Article Body", description: b.content, image: "" },
+                ]);
+              }
+            } catch {
+              setSections([
+                { id: "sec_1", title: "Article Body", description: b.content, image: "" },
+              ]);
+            }
+          } else {
+            setSections([
+              { id: "sec_1", title: "Article Body", description: "", image: "" },
+            ]);
+          }
         }
         setIsLoading(false);
       })
@@ -50,11 +86,16 @@ export default function EditBlogPage({
     setIsSubmitting(true);
     setError(null);
 
+    const payload = {
+      ...formData,
+      content: JSON.stringify(sections),
+    };
+
     try {
       const res = await fetch(`/api/admin/blog/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       const data = await res.json();
@@ -96,7 +137,7 @@ export default function EditBlogPage({
               Edit Article — {formData.title}
             </h1>
             <p className="text-xs text-[#8e8e93]">
-              Update blog post content and metadata
+              Update blog post content, sections, images, and metadata
             </p>
           </div>
         </div>
@@ -109,10 +150,11 @@ export default function EditBlogPage({
       )}
 
       <form onSubmit={handleSubmit} className="space-y-8">
+        {/* Article Meta */}
         <div className="p-6 rounded-2xl bg-[#121826]/70 border border-white/10 space-y-6">
           <h2 className="text-lg font-bold font-[var(--font-lato)] text-[#06ACFE] flex items-center gap-2">
             <FileText className="w-5 h-5" />
-            <span>Article Meta & Content</span>
+            <span>Article Meta</span>
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -162,7 +204,7 @@ export default function EditBlogPage({
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
               <label className="block text-xs font-bold uppercase text-[#8e8e93] mb-2 font-[var(--font-lato)]">
                 Category
@@ -190,37 +232,24 @@ export default function EditBlogPage({
                 className="w-full px-4 py-3 bg-[#090b0e] border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:border-[#06ACFE]"
               />
             </div>
-
-            <div>
-              <label className="block text-xs font-bold uppercase text-[#8e8e93] mb-2 font-[var(--font-lato)]">
-                Cover Image Asset Path
-              </label>
-              <input
-                type="text"
-                value={formData.coverImage}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, coverImage: e.target.value }))
-                }
-                className="w-full px-4 py-3 bg-[#090b0e] border border-white/10 rounded-xl text-white text-sm font-mono focus:outline-none focus:border-[#06ACFE]"
-              />
-            </div>
           </div>
 
-          <div>
-            <label className="block text-xs font-bold uppercase text-[#8e8e93] mb-2 font-[var(--font-lato)]">
-              Article Body Content (Markdown) *
-            </label>
-            <textarea
-              required
-              rows={12}
-              value={formData.content}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, content: e.target.value }))
-              }
-              className="w-full px-4 py-3 bg-[#090b0e] border border-white/10 rounded-xl text-white text-sm font-mono focus:outline-none focus:border-[#06ACFE]"
-            />
-          </div>
+          {/* Cover Image Upload Control */}
+          <ImageUpload
+            label="Article Cover Image"
+            value={formData.coverImage}
+            onChange={(url) =>
+              setFormData((prev) => ({ ...prev, coverImage: url }))
+            }
+          />
         </div>
+
+        {/* Dynamic Section Builder with Add Button at Top Right */}
+        <SectionBlockBuilder
+          label="Article Description &amp; Content Blocks"
+          sections={sections}
+          onChange={(newSections) => setSections(newSections)}
+        />
 
         <div className="flex items-center justify-end gap-4">
           <Link

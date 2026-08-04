@@ -4,6 +4,8 @@ import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Save, FileText } from "lucide-react";
+import ImageUpload from "@/components/admin/ImageUpload";
+import SectionBlockBuilder, { ContentSection } from "@/components/admin/SectionBlockBuilder";
 
 export default function NewBlogPage() {
   const router = useRouter();
@@ -14,7 +16,6 @@ export default function NewBlogPage() {
     title: "",
     slug: "",
     excerpt: "",
-    content: "",
     category: "Design Trends",
     tags: "UI/UX, AI, Web Design",
     coverImage: "/assets/figma_img_23.png",
@@ -22,6 +23,15 @@ export default function NewBlogPage() {
     published: true,
     featured: false,
   });
+
+  const [sections, setSections] = useState<ContentSection[]>([
+    {
+      id: "sec_1",
+      title: "Introduction & Key Overview",
+      description: "Write your article introduction or main topic overview here...",
+      image: "",
+    },
+  ]);
 
   const generateSlug = (title: string) => {
     return title
@@ -44,11 +54,16 @@ export default function NewBlogPage() {
     setIsSubmitting(true);
     setError(null);
 
+    const payload = {
+      ...formData,
+      content: JSON.stringify(sections),
+    };
+
     try {
       const res = await fetch("/api/admin/blog", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       const data = await res.json();
@@ -81,7 +96,7 @@ export default function NewBlogPage() {
               Write New Blog Article
             </h1>
             <p className="text-xs text-[#8e8e93]">
-              Create a new blog post for your website readers
+              Create a new blog post with dynamic content section blocks
             </p>
           </div>
         </div>
@@ -94,10 +109,11 @@ export default function NewBlogPage() {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-8">
+        {/* Article Meta */}
         <div className="p-6 rounded-2xl bg-[#121826]/70 border border-white/10 space-y-6">
           <h2 className="text-lg font-bold font-[var(--font-lato)] text-[#06ACFE] flex items-center gap-2">
             <FileText className="w-5 h-5" />
-            <span>Article Meta & Content</span>
+            <span>Article Meta</span>
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -134,7 +150,7 @@ export default function NewBlogPage() {
 
           <div>
             <label className="block text-xs font-bold uppercase text-[#8e8e93] mb-2 font-[var(--font-lato)]">
-              Article Excerpt *
+              Article Summary / Excerpt *
             </label>
             <textarea
               required
@@ -148,7 +164,7 @@ export default function NewBlogPage() {
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
               <label className="block text-xs font-bold uppercase text-[#8e8e93] mb-2 font-[var(--font-lato)]">
                 Category
@@ -178,39 +194,24 @@ export default function NewBlogPage() {
                 className="w-full px-4 py-3 bg-[#090b0e] border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:border-[#06ACFE]"
               />
             </div>
-
-            <div>
-              <label className="block text-xs font-bold uppercase text-[#8e8e93] mb-2 font-[var(--font-lato)]">
-                Cover Image Asset Path
-              </label>
-              <input
-                type="text"
-                value={formData.coverImage}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, coverImage: e.target.value }))
-                }
-                placeholder="/assets/figma_img_23.png"
-                className="w-full px-4 py-3 bg-[#090b0e] border border-white/10 rounded-xl text-white text-sm font-mono focus:outline-none focus:border-[#06ACFE]"
-              />
-            </div>
           </div>
 
-          <div>
-            <label className="block text-xs font-bold uppercase text-[#8e8e93] mb-2 font-[var(--font-lato)]">
-              Article Content (Markdown / HTML) *
-            </label>
-            <textarea
-              required
-              rows={12}
-              value={formData.content}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, content: e.target.value }))
-              }
-              placeholder="Write full article body text in Markdown format..."
-              className="w-full px-4 py-3 bg-[#090b0e] border border-white/10 rounded-xl text-white text-sm font-mono focus:outline-none focus:border-[#06ACFE]"
-            />
-          </div>
+          {/* Cover Image Upload Control */}
+          <ImageUpload
+            label="Article Cover Image"
+            value={formData.coverImage}
+            onChange={(url) =>
+              setFormData((prev) => ({ ...prev, coverImage: url }))
+            }
+          />
         </div>
+
+        {/* Dynamic Section Builder with Add Button at Top Right */}
+        <SectionBlockBuilder
+          label="Article Description &amp; Content Blocks"
+          sections={sections}
+          onChange={(newSections) => setSections(newSections)}
+        />
 
         <div className="flex items-center justify-end gap-4">
           <Link

@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FloatingContact from "@/components/FloatingContact";
 import CtaSection from "@/components/CtaSection";
-import { ChevronRight, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 interface PortfolioItem {
   id: string;
@@ -17,7 +17,7 @@ interface PortfolioItem {
   category: string;
   impactPill: string;
   summary: string;
-  image: string;
+  image?: string;
 }
 
 const defaultPortfolioItems: PortfolioItem[] = [
@@ -58,10 +58,10 @@ export default function PortfolioPage() {
   const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>(defaultPortfolioItems);
 
   useEffect(() => {
-    fetch("/api/admin/projects")
+    fetch("/api/projects")
       .then((res) => res.json())
       .then((data) => {
-        if (data.projects && data.projects.length > 0) {
+        if (data.projects && Array.isArray(data.projects)) {
           const mapped = data.projects.map((p: any) => ({
             id: p.id,
             slug: p.slug,
@@ -70,7 +70,7 @@ export default function PortfolioPage() {
             category: p.category || "all",
             impactPill: p.impactPill || "Case Study",
             summary: p.shortDesc,
-            image: p.heroImage || "/assets/project_triply_exact.png",
+            image: p.heroImage !== undefined ? p.heroImage : "",
           }));
           setPortfolioItems(mapped);
         }
@@ -113,52 +113,65 @@ export default function PortfolioPage() {
 
       {/* Portfolio Grid */}
       <section className="py-16 px-6 md:px-12 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredItems.map((item) => (
-            <article
-              key={item.id}
-              className="bg-[#121826]/70 rounded-[4px] overflow-hidden border border-white/5 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(6,172,254,0.15)] group"
-            >
-              <div className="relative h-64 bg-[#090b0e] overflow-hidden">
-                <Image
-                  src={item.image}
-                  alt={item.title}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-              </div>
+        {filteredItems.length === 0 ? (
+          <div className="py-20 text-center text-[#8e8e93]">
+            <p className="text-lg font-bold mb-2 text-white">No published portfolio projects yet</p>
+            <p className="text-sm">Check back soon for new case studies.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredItems.map((item) => (
+              <article
+                key={item.id}
+                className="bg-[#121826]/70 rounded-[4px] overflow-hidden border border-white/5 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(6,172,254,0.15)] group"
+              >
+                {item.image && item.image.trim() !== "" && (
+                  <div className="relative h-64 bg-[#090b0e] overflow-hidden">
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                )}
 
-              <div className="p-6 flex flex-col justify-between flex-1">
-                <div>
-                  <div className="flex items-center justify-between gap-2 mb-3">
-                    <span className="text-xs font-bold uppercase text-[#06ACFE] font-[var(--font-lato)]">
-                      {item.tag}
-                    </span>
-                    <span className="bg-[#10b981]/15 text-[#10b981] px-2.5 py-0.5 rounded-[4px] text-[11px] font-bold">
-                      {item.impactPill}
-                    </span>
+                <div className="p-6 flex flex-col justify-between flex-1">
+                  <div>
+                    <div className="flex items-center justify-between gap-2 mb-3">
+                      <span className="text-xs font-bold uppercase text-[#06ACFE] font-[var(--font-lato)]">
+                        {item.tag}
+                      </span>
+                      <span className="bg-[#10b981]/15 text-[#10b981] px-2.5 py-0.5 rounded-[4px] text-[11px] font-bold">
+                        {item.impactPill}
+                      </span>
+                    </div>
+
+                    {/* Title without hover text color change */}
+                    <h3 className="text-xl font-bold font-[var(--font-lato)] text-white mb-3">
+                      {item.title}
+                    </h3>
+
+                    <p className="text-[#8e8e93] text-sm font-[var(--font-inter)] leading-relaxed mb-6 line-clamp-3">
+                      {item.summary}
+                    </p>
                   </div>
 
-                  <h3 className="text-xl font-bold font-[var(--font-lato)] text-white mb-3 group-hover:text-[#06ACFE] transition-colors">
-                    {item.title}
-                  </h3>
-
-                  <p className="text-[#8e8e93] text-sm font-[var(--font-inter)] leading-relaxed mb-6 line-clamp-3">
-                    {item.summary}
-                  </p>
+                  {/* Rectangle Button Container for View Full Case Study */}
+                  <div>
+                    <Link
+                      href={`/portfolio/${item.slug || item.id}`}
+                      className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-[4px] bg-[#181d28] hover:bg-[#06ACFE] text-white border border-white/10 font-bold font-[var(--font-lato)] text-xs transition-all duration-300 shadow-md group/btn"
+                    >
+                      <span>View Full Case Study</span>
+                      <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
+                    </Link>
+                  </div>
                 </div>
-
-                <Link
-                  href={`/portfolio/${item.slug || item.id}`}
-                  className="inline-flex items-center gap-2 text-[#06ACFE] font-bold font-[var(--font-lato)] text-sm hover:underline"
-                >
-                  <span>View Full Case Study</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </div>
-            </article>
-          ))}
-        </div>
+              </article>
+            ))}
+          </div>
+        )}
       </section>
 
       <CtaSection />
