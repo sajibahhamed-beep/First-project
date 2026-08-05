@@ -2,7 +2,6 @@
 
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { Lock, Mail, Eye, EyeOff, ShieldCheck, ArrowRight, AlertCircle } from "lucide-react";
 
 export default function AdminLoginPage() {
@@ -43,7 +42,7 @@ export default function AdminLoginPage() {
 
   return (
     <div className="min-h-screen bg-[#090b0e] text-white flex flex-col justify-center items-center px-4 sm:px-6 relative overflow-hidden">
-      {/* Background ambient lighting */}
+      {/* Background ambient glow */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#06ACFE]/10 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="w-full max-w-md relative z-10">
@@ -83,7 +82,7 @@ export default function AdminLoginPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@sajib.com"
+                  placeholder="Enter your email"
                   className="w-full pl-11 pr-4 py-3.5 bg-[#090b0e]/80 border border-white/10 rounded-xl text-white placeholder-[#52525b] text-sm focus:outline-none focus:border-[#06ACFE] focus:ring-1 focus:ring-[#06ACFE] transition-all"
                 />
               </div>
@@ -130,8 +129,6 @@ export default function AdminLoginPage() {
               )}
             </button>
           </form>
-
-
         </div>
       </div>
     </div>
