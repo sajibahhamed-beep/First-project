@@ -8,15 +8,16 @@ const JWT_SECRET = new TextEncoder().encode(
 
 const COOKIE_NAME = "admin_session_token";
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Unprotected admin routes
+  // Unprotected admin routes (publicly accessible without session)
   if (
     pathname === "/admin/login" ||
     pathname === "/admin/forgot-password" ||
     pathname === "/api/admin/auth/login" ||
-    pathname === "/api/admin/auth/forgot-password"
+    pathname === "/api/admin/auth/forgot-password" ||
+    pathname === "/api/admin/faqs" // public GET for homepage FAQ section
   ) {
     return NextResponse.next();
   }
