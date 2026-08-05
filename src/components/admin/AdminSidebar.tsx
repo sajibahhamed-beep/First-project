@@ -11,6 +11,7 @@ import {
   LogOut,
   ExternalLink,
   ShieldCheck,
+  HelpCircle,
 } from "lucide-react";
 
 const navItems = [
@@ -18,6 +19,7 @@ const navItems = [
   { name: "Projects & Case Studies", href: "/admin/projects", icon: FolderKanban },
   { name: "Blog Posts", href: "/admin/blog", icon: FileText },
   { name: "Contact Inbox", href: "/admin/contact", icon: Inbox },
+  { name: "FAQ Manager", href: "/admin/faqs", icon: HelpCircle },
   { name: "Site & CMS Settings", href: "/admin/settings", icon: Settings },
 ];
 

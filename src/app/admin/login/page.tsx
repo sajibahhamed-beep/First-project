@@ -131,9 +131,7 @@ export default function AdminLoginPage() {
             </button>
           </form>
 
-          <div className="mt-6 text-center text-xs text-[#71717a]">
-            Default Login: <code className="text-[#06ACFE]">admin@sajib.com</code> / <code className="text-[#06ACFE]">admin123456</code>
-          </div>
+
         </div>
       </div>
     </div>

@@ -52,11 +52,16 @@ export default function FaqSection() {
   const [faqs, setFaqs] = useState<FaqItem[]>(defaultFaqs);
 
   useEffect(() => {
-    fetch("/api/admin/homepage")
+    fetch("/api/admin/faqs")
       .then((res) => res.json())
       .then((data) => {
         if (data.faqs && data.faqs.length > 0) {
-          setFaqs(data.faqs);
+          setFaqs(
+            data.faqs.map((f: { id: string; question: string; answer: string }) => ({
+              question: f.question,
+              answer: f.answer,
+            }))
+          );
         }
       })
       .catch(() => {});
@@ -77,13 +82,13 @@ export default function FaqSection() {
         </p>
       </div>
 
-      <div className="flex flex-col gap-4 w-full">
+      <div className="flex flex-col gap-2 w-full">
         {faqs.map((faq, idx) => {
           const isOpen = activeIndex === idx;
           return (
             <div
               key={idx}
-              className={`bg-[#121826]/70 rounded-[4px] border border-white/5 shadow-[0_8px_30px_rgba(0,0,0,0.35)] transition-colors duration-300 ${
+              className={`bg-[#121826]/70 rounded-[4px] shadow-[0_8px_30px_rgba(0,0,0,0.35)] transition-colors duration-300 ${
                 isOpen ? "bg-[#121826]" : "hover:bg-[#121826]/90"
               }`}
             >

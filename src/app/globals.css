@@ -83,39 +83,54 @@
   box-shadow: -12px 18px 45px rgba(0, 0, 0, 0.9);
 }
 
-/* MARQUEE KEYFRAMES & PERFORMANCE OPTIMIZATIONS */
-@keyframes marqueeLeft {
-  0% { transform: translate3d(0, 0, 0); }
+/*
+ * MARQUEE KEYFRAMES & PERFORMANCE OPTIMIZATIONS
+ *
+ * Direction guide (content travel direction, not animation name):
+ *   marqueeScrollLeft  → content moves RIGHT-TO-LEFT  (0% → -50%)  — standard ticker
+ *   marqueeScrollRight → content moves LEFT-TO-RIGHT  (-50% → 0%)  — reverse ticker
+ *
+ * Rule: choose the keyframe based on which way the CONTENT VISUALLY MOVES.
+ * DO NOT mix these up — using the wrong one reverses the scroll direction.
+ */
+
+/* Content travels RIGHT → LEFT (standard scrolling ticker) */
+@keyframes marqueeScrollLeft {
+  0%   { transform: translate3d(0, 0, 0); }
   100% { transform: translate3d(-50%, 0, 0); }
 }
 
-@keyframes marqueeRight {
-  0% { transform: translate3d(-50%, 0, 0); }
+/* Content travels LEFT → RIGHT (reverse ticker) */
+@keyframes marqueeScrollRight {
+  0%   { transform: translate3d(-50%, 0, 0); }
   100% { transform: translate3d(0, 0, 0); }
 }
 
+/* Row 1: text moves RIGHT → LEFT */
 .animate-marquee-left {
   display: flex;
   width: max-content;
   will-change: transform;
   backface-visibility: hidden;
-  animation: marqueeLeft 35s linear infinite;
+  animation: marqueeScrollLeft 35s linear infinite;
 }
 
+/* Row 3: text moves LEFT → RIGHT */
 .animate-marquee-right {
   display: flex;
   width: max-content;
   will-change: transform;
   backface-visibility: hidden;
-  animation: marqueeRight 35s linear infinite;
+  animation: marqueeScrollRight 35s linear infinite;
 }
 
+/* Row 2: image strip moves RIGHT → LEFT (same direction as Row 1 text) */
 .animate-marquee-images-right {
   display: flex;
   width: max-content;
   will-change: transform;
   backface-visibility: hidden;
-  animation: marqueeRight 45s linear infinite;
+  animation: marqueeScrollLeft 45s linear infinite;
 }
 
 .animate-marquee-slow {
@@ -134,6 +149,7 @@
   .animate-marquee-right {
     animation-duration: 25s;
   }
+  /* Image strip — keep proportionally slower than text rows on mobile */
   .animate-marquee-images-right {
     animation-duration: 30s;
   }
