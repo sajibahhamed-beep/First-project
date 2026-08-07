@@ -44,24 +44,23 @@ const defaultPosts: BlogPost[] = [
 export default function BlogPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedCategory] = useState("all");
 
   useEffect(() => {
-    setLoading(true);
     const url = selectedCategory === "all" ? "/api/blog" : `/api/blog?category=${encodeURIComponent(selectedCategory)}`;
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
         if (data.blogs && Array.isArray(data.blogs)) {
-          const mapped = data.blogs.map((b: any) => ({
-            id: b.id,
-            slug: b.slug,
-            title: b.title,
-            excerpt: b.excerpt,
-            category: b.category || "Design",
-            readTime: b.readTime || "5 min read",
-            createdAt: b.createdAt,
-            image: b.coverImage !== undefined ? b.coverImage : "",
+          const mapped = data.blogs.map((b: Record<string, unknown>) => ({
+            id: String(b.id),
+            slug: b.slug ? String(b.slug) : undefined,
+            title: String(b.title),
+            excerpt: String(b.excerpt),
+            category: b.category ? String(b.category) : "Design",
+            readTime: b.readTime ? String(b.readTime) : "5 min read",
+            createdAt: b.createdAt ? String(b.createdAt) : undefined,
+            image: b.coverImage !== undefined ? String(b.coverImage) : "",
           }));
           setPosts(mapped);
         }

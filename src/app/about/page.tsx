@@ -110,7 +110,9 @@ export default function AboutPage() {
 
             {/* Download Resume Button */}
             <a
-              href="#"
+              href="https://drive.google.com/file/d/1TXMVWEfulEjQeO3Mt3o-pbQuHW4mI08z/view?usp=sharing"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2.5 px-6 py-3 rounded-[4px] bg-[#181d28] text-[#8e8e93] font-medium font-[var(--font-lato)] text-sm hover:bg-[#202736] hover:text-white transition-all shadow-md mb-14"
             >
               Download

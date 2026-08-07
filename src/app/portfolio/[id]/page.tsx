@@ -16,9 +16,6 @@ import {
   Award,
   ShieldCheck,
   Sparkles,
-  Search,
-  Compass,
-  Palette,
   TrendingUp,
 } from "lucide-react";
 import { ContentSection } from "@/components/admin/SectionBlockBuilder";

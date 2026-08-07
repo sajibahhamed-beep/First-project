@@ -20,38 +20,6 @@ interface PortfolioItem {
   image?: string;
 }
 
-const defaultPortfolioItems: PortfolioItem[] = [
-  {
-    id: "triply",
-    slug: "triply",
-    title: "Triply - Easy Booking for Dream Trips",
-    tag: "Travel",
-    category: "travel",
-    impactPill: "3.2x Booking Rate",
-    summary: "UX/UI Case Study: All-inclusive trip planner app redesigned for mobile travelers with friction-free booking flows.",
-    image: "/assets/project_triply_exact.png",
-  },
-  {
-    id: "plate",
-    slug: "plate",
-    title: "Plate - Transform Your Dining Experience",
-    tag: "Restaurant",
-    category: "restaurant",
-    impactPill: "+140% Orders",
-    summary: "UX/UI Case Study: Curated restaurant discovery and table reservation mobile application.",
-    image: "/assets/project_plate_exact.png",
-  },
-  {
-    id: "yenex",
-    slug: "yenex",
-    title: "Yenex - SaaS Financial Dashboard & Analytics",
-    tag: "SaaS",
-    category: "saas",
-    impactPill: "4.8 Rating",
-    summary: "UX/UI Case Study: Smart energy and SaaS analytics dashboard simplifying complex enterprise data.",
-    image: "/assets/project_yenex_exact.png",
-  },
-];
 
 export default function PortfolioPage() {
   const [activeFilter, setActiveFilter] = useState("all");
@@ -59,20 +27,19 @@ export default function PortfolioPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
     fetch("/api/projects")
       .then((res) => res.json())
       .then((data) => {
         if (data.projects && Array.isArray(data.projects)) {
-          const mapped = data.projects.map((p: any) => ({
-            id: p.id,
-            slug: p.slug,
-            title: p.title,
-            tag: p.categoryTag || "General",
-            category: p.category ? p.category.toLowerCase() : "all",
-            impactPill: p.impactPill || "Case Study",
-            summary: p.shortDesc,
-            image: p.heroImage !== undefined ? p.heroImage : "",
+          const mapped = data.projects.map((p: Record<string, unknown>) => ({
+            id: String(p.id),
+            slug: p.slug ? String(p.slug) : undefined,
+            title: String(p.title),
+            tag: p.categoryTag ? String(p.categoryTag) : "General",
+            category: typeof p.category === "string" ? p.category.toLowerCase() : "all",
+            impactPill: p.impactPill ? String(p.impactPill) : "Case Study",
+            summary: String(p.shortDesc),
+            image: p.heroImage !== undefined ? String(p.heroImage) : "",
           }));
           setPortfolioItems(mapped);
         }
