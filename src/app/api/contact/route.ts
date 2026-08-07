@@ -55,7 +55,8 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Contact form submission error:", error);
     return NextResponse.json(
-      { success: true, message: "Inquiry recorded successfully" }
+      { success: false, error: "Failed to record inquiry" },
+      { status: 500 }
     );
   }
 }

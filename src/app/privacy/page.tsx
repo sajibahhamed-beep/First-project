@@ -1,15 +1,42 @@
-import Link from "next/link";
+"use client";
+
+import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FloatingContact from "@/components/FloatingContact";
+import Link from "next/link";
+import { Loader2 } from "lucide-react";
 
-export default function PrivacyPage() {
+interface PolicySection {
+  id: string;
+  title: string;
+  description: string;
+}
+
+export default function PrivacyPolicyPage() {
+  const [sections, setSections] = useState<PolicySection[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/privacy")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.sections && Array.isArray(data.sections)) {
+          setSections(data.sections);
+        }
+        setIsLoading(false);
+      })
+      .catch(() => {
+        setIsLoading(false);
+      });
+  }, []);
+
   return (
     <main className="relative min-h-screen bg-[#090b0e] text-white">
       <FloatingContact />
       <Navbar />
 
-      {/* Hero Header Banner using Top Heading.png as background (Left Aligned) */}
+      {/* Hero Header Banner */}
       <section
         className="relative pt-36 pb-16 px-6 md:px-12 bg-center bg-cover bg-no-repeat border-b border-white/5 overflow-hidden"
         style={{ backgroundImage: `url('/assets/Top Heading.png')` }}
@@ -19,88 +46,55 @@ export default function PrivacyPage() {
             <Link href="/" className="hover:underline">
               Home
             </Link>
-            <span>/</span>
+            <span className="text-white/40">/</span>
             <span>Privacy Policy</span>
           </div>
 
-          <h1 className="text-4xl md:text-6xl font-black font-[var(--font-lato)] leading-tight text-white mb-2">
-            Privacy Policy
+          <h1 className="text-4xl md:text-5xl lg:text-[56px] font-extrabold font-[var(--font-lato)] text-white mb-6 leading-[1.1]">
+            Privacy <span className="text-[#06ACFE]">Policy</span>
           </h1>
+          <p className="text-[#8e8e93] font-[var(--font-inter)] text-lg max-w-2xl leading-relaxed">
+            Read our privacy policy to learn how we protect and manage your data.
+          </p>
         </div>
       </section>
 
-      {/* Main Privacy Policy Content */}
-      <section className="py-20 px-6 md:px-12 max-w-5xl mx-auto">
-        <div className="glass-card p-8 md:p-14 rounded-[4px] border border-white/10 bg-[#121826]/70 shadow-[0_20px_50px_rgba(0,0,0,0.5)] space-y-8 font-[var(--font-inter)] text-[#8e8e93]">
-          <div>
-            <p className="text-sm text-[#71717a] mb-6">
-              Last Updated: January 29, 2026
-            </p>
-            <p className="text-base leading-relaxed text-zinc-300">
-              Welcome to Sajuxly. Your privacy is important to us. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or engage with our UI/UX design services.
-            </p>
-          </div>
-
-          <div className="border-t border-white/10 pt-6">
-            <h2 className="text-xl font-bold font-[var(--font-lato)] text-white mb-3">
-              1. Information We Collect
-            </h2>
-            <p className="leading-relaxed mb-3">
-              We may collect personal information that you voluntarily provide to us when expressing an interest in obtaining information about us or our services, such as:
-            </p>
-            <ul className="list-disc list-inside space-y-1.5 pl-2 text-sm">
-              <li>Full Name and Email Address</li>
-              <li>Phone or WhatsApp Number</li>
-              <li>Location / Country details</li>
-              <li>Project briefs and consultation requirements</li>
-            </ul>
-          </div>
-
-          <div className="border-t border-white/10 pt-6">
-            <h2 className="text-xl font-bold font-[var(--font-lato)] text-white mb-3">
-              2. How We Use Your Information
-            </h2>
-            <p className="leading-relaxed mb-3">
-              We use the collected information for specific business purposes, including:
-            </p>
-            <ul className="list-disc list-inside space-y-1.5 pl-2 text-sm">
-              <li>Responding to inquiries and booking consultations</li>
-              <li>Delivering custom UI/UX design services and deliverables</li>
-              <li>Drafting Non-Disclosure Agreements (NDAs) upon request</li>
-              <li>Improving site navigation, performance, and user experience</li>
-            </ul>
-          </div>
-
-          <div className="border-t border-white/10 pt-6">
-            <h2 className="text-xl font-bold font-[var(--font-lato)] text-white mb-3">
-              3. Data Security & Confidentiality
-            </h2>
-            <p className="leading-relaxed">
-              We prioritize the protection of your intellectual property and project assets. All client project briefs, wireframes, and design files remain strictly confidential and will never be shared without prior explicit authorization.
-            </p>
-          </div>
-
-          <div className="border-t border-white/10 pt-6">
-            <h2 className="text-xl font-bold font-[var(--font-lato)] text-white mb-3">
-              4. Third-Party Services & Cookies
-            </h2>
-            <p className="leading-relaxed">
-              Our website may utilize essential cookies or privacy-conscious analytics services to understand traffic trends and optimize site load times. We do not sell or monetize any user tracking data.
-            </p>
-          </div>
-
-          <div className="border-t border-white/10 pt-6">
-            <h2 className="text-xl font-bold font-[var(--font-lato)] text-white mb-3">
-              5. Contact Us
-            </h2>
-            <p className="leading-relaxed mb-4">
-              If you have any questions or concerns regarding this Privacy Policy or your personal data, please contact us at:
-            </p>
-            <div className="bg-[#181d28] p-4 rounded-[4px] border border-white/10 text-white font-[var(--font-lato)] text-sm space-y-1">
-              <p><strong>WhatsApp:</strong> +880 177 555 1325</p>
-              <p><strong>Email:</strong> ElizabethJ@jourrapide.com</p>
+      {/* Content Section */}
+      <section className="py-20 px-6 md:px-12 bg-[#090b0e]">
+        <div className="max-w-4xl mx-auto">
+          {isLoading ? (
+            <div className="flex justify-center p-12 bg-[#121418] border border-white/10 rounded-2xl">
+              <Loader2 className="w-10 h-10 text-[#06ACFE] animate-spin" />
             </div>
-          </div>
+          ) : sections.length > 0 ? (
+            <div className="space-y-12">
+              {sections.map((sec, index) => (
+                <div key={sec.id} className="flex gap-6 md:gap-10 items-start">
+                  {/* Sequence Number */}
+                  <div className="shrink-0 mt-1.5">
+                    <span className="flex items-center justify-center w-12 h-12 rounded-full bg-[#1c1f26] border border-white/10 text-[#06ACFE] font-extrabold font-[var(--font-lato)] text-xl shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+                      {index + 1}
+                    </span>
+                  </div>
+
+                  {/* Section Content */}
+                  <div className="flex-1">
+                    <h2 className="text-2xl md:text-3xl font-extrabold font-[var(--font-lato)] text-white mb-4">
+                      {sec.title || `Policy Section ${index + 1}`}
+                    </h2>
+                    <div
+                      className="text-[#a1a1aa] font-[var(--font-inter)] text-base leading-relaxed whitespace-pre-line"
+                      dangerouslySetInnerHTML={{ __html: sec.description }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="bg-[#121418] border border-white/10 rounded-2xl p-12 text-center text-[#8e8e93]">
+              The privacy policy is currently being updated. Please check back later.
+            </div>
+          )}
         </div>
       </section>
 

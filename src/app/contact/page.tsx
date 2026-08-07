@@ -18,10 +18,12 @@ export default function ContactPage() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setErrorMsg("");
 
     try {
       const res = await fetch("/api/contact", {
@@ -35,11 +37,12 @@ export default function ContactPage() {
       if (res.ok) {
         setSubmitted(true);
       } else {
-        setSubmitted(true); // Graceful fallback
+        const data = await res.json();
+        setErrorMsg(data.error || "Failed to submit form. Please try again.");
       }
     } catch (err) {
       console.error("Submission error:", err);
-      setSubmitted(true);
+      setErrorMsg("An unexpected error occurred. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -155,6 +158,12 @@ export default function ContactPage() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+                {errorMsg && (
+                  <div className="p-4 rounded-[4px] bg-red-500/10 border border-red-500/50 text-red-500 text-sm font-[var(--font-lato)]">
+                    {errorMsg}
+                  </div>
+                )}
+                
                 {/* Full Name */}
                 <div>
                   <label className="block text-[#a1a1aa] font-medium font-[var(--font-lato)] text-sm mb-2">
