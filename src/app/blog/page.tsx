@@ -42,10 +42,14 @@ const defaultPosts: BlogPost[] = [
 ];
 
 export default function BlogPage() {
-  const [posts, setPosts] = useState<BlogPost[]>(defaultPosts);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState("all");
 
   useEffect(() => {
-    fetch("/api/blog")
+    setLoading(true);
+    const url = selectedCategory === "all" ? "/api/blog" : `/api/blog?category=${encodeURIComponent(selectedCategory)}`;
+    fetch(url)
       .then((res) => res.json())
       .then((data) => {
         if (data.blogs && Array.isArray(data.blogs)) {
@@ -62,8 +66,9 @@ export default function BlogPage() {
           setPosts(mapped);
         }
       })
-      .catch(() => {});
-  }, []);
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, [selectedCategory]);
 
   return (
     <main className="relative min-h-screen bg-[#090b0e] text-white">

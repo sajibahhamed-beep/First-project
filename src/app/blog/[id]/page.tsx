@@ -90,6 +90,9 @@ export default function BlogArticlePage({
             }
           }
 
+          const nextId = data.nextBlog ? (data.nextBlog.slug || data.nextBlog.id) : "";
+          const nextTitle = data.nextBlog ? data.nextBlog.title : "Back to Blog Feed";
+
           setArticle({
             id: b.id,
             title: b.title,
@@ -106,8 +109,8 @@ export default function BlogArticlePage({
             heroImage: b.coverImage && b.coverImage.trim() !== "" ? b.coverImage : undefined,
             sections: parsedSections || undefined,
             contentParagraphs: plainParagraphs.length > 0 ? plainParagraphs : undefined,
-            nextId: "1",
-            nextTitle: "The Impact of Technology on the Workplace",
+            nextId: nextId,
+            nextTitle: nextTitle,
           });
         } else if (staticArticles[paramId]) {
           setArticle(staticArticles[paramId]);

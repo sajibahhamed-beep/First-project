@@ -19,7 +19,15 @@ export async function GET(
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ project });
+    const nextProject = await prisma.project.findFirst({
+      where: {
+        published: true,
+        id: { not: project.id },
+      },
+      orderBy: { displayOrder: "asc" },
+    });
+
+    return NextResponse.json({ project, nextProject });
   } catch (error) {
     return NextResponse.json({ error: "Failed to fetch project" }, { status: 500 });
   }

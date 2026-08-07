@@ -55,9 +55,11 @@ const defaultPortfolioItems: PortfolioItem[] = [
 
 export default function PortfolioPage() {
   const [activeFilter, setActiveFilter] = useState("all");
-  const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>(defaultPortfolioItems);
+  const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     fetch("/api/projects")
       .then((res) => res.json())
       .then((data) => {
@@ -67,7 +69,7 @@ export default function PortfolioPage() {
             slug: p.slug,
             title: p.title,
             tag: p.categoryTag || "General",
-            category: p.category || "all",
+            category: p.category ? p.category.toLowerCase() : "all",
             impactPill: p.impactPill || "Case Study",
             summary: p.shortDesc,
             image: p.heroImage !== undefined ? p.heroImage : "",
@@ -75,13 +77,21 @@ export default function PortfolioPage() {
           setPortfolioItems(mapped);
         }
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
+
+  const categories = [
+    { id: "all", label: "All Projects" },
+    { id: "travel", label: "Travel & Hospitality" },
+    { id: "restaurant", label: "Restaurant & Dining" },
+    { id: "saas", label: "SaaS & Financial" },
+  ];
 
   const filteredItems =
     activeFilter === "all"
       ? portfolioItems
-      : portfolioItems.filter((item) => item.category === activeFilter);
+      : portfolioItems.filter((item) => item.category === activeFilter.toLowerCase());
 
   return (
     <main className="relative min-h-screen bg-[#090b0e] text-white">
@@ -113,7 +123,29 @@ export default function PortfolioPage() {
 
       {/* Portfolio Grid */}
       <section className="py-16 px-6 md:px-12 max-w-7xl mx-auto">
-        {filteredItems.length === 0 ? (
+        {/* Category Filters */}
+        <div className="flex flex-wrap items-center gap-3 mb-10">
+          {categories.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => setActiveFilter(cat.id)}
+              className={`px-5 py-2.5 rounded-[4px] text-xs font-bold font-[var(--font-lato)] transition-all ${
+                activeFilter === cat.id
+                  ? "bg-[#06ACFE] text-white shadow-[0_4px_15px_rgba(6,172,254,0.35)]"
+                  : "bg-[#121826] text-[#8e8e93] hover:text-white border border-white/10"
+              }`}
+            >
+              {cat.label}
+            </button>
+          ))}
+        </div>
+
+        {loading ? (
+          <div className="py-20 text-center text-[#8e8e93]">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#06ACFE] mx-auto mb-4" />
+            <span>Loading portfolio projects...</span>
+          </div>
+        ) : filteredItems.length === 0 ? (
           <div className="py-20 text-center text-[#8e8e93]">
             <p className="text-lg font-bold mb-2 text-white">No published portfolio projects yet</p>
             <p className="text-sm">Check back soon for new case studies.</p>

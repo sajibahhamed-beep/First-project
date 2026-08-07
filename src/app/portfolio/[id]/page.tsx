@@ -146,6 +146,9 @@ export default function CaseStudyPage({
           // Filter out empty strings in screens
           screensArr = screensArr.filter((s) => s && s.trim() !== "");
 
+          const nextProjId = data.nextProject ? (data.nextProject.slug || data.nextProject.id) : "";
+          const nextProjTitle = data.nextProject ? data.nextProject.title : "Back to Portfolio Showcase";
+
           setCaseStudy({
             id: p.id,
             title: p.title,
@@ -171,8 +174,8 @@ export default function CaseStudyPage({
             results: resultsArr,
             heroImage: p.heroImage && p.heroImage.trim() !== "" ? p.heroImage : undefined,
             screens: screensArr,
-            nextId: "triply",
-            nextTitle: "Triply — Easy Booking for Dream Trips",
+            nextId: nextProjId,
+            nextTitle: nextProjTitle,
           });
         } else if (staticCaseStudies[caseStudyId]) {
           setCaseStudy(staticCaseStudies[caseStudyId]);

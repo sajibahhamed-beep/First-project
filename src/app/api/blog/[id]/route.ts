@@ -18,7 +18,15 @@ export async function GET(
       return NextResponse.json({ error: "Blog post not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ blog });
+    const nextBlog = await prisma.blog.findFirst({
+      where: {
+        published: true,
+        id: { not: blog.id },
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    return NextResponse.json({ blog, nextBlog });
   } catch (error) {
     return NextResponse.json({ error: "Failed to fetch blog post" }, { status: 500 });
   }

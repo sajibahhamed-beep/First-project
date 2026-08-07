@@ -29,23 +29,37 @@ export async function PUT(
   try {
     const { id } = await params;
     const body = await request.json();
-    const { caseStudy, ...projData } = body;
+    const { caseStudy, ...rawData } = body;
 
-    if (projData.displayOrder) {
-      projData.displayOrder = parseInt(projData.displayOrder);
+    const projectUpdateData: any = {};
+    const validProjectKeys = [
+      "title", "slug", "shortDesc", "category", "categoryTag", "tagColor",
+      "impactPill", "pages", "duration", "role", "tools", "heroImage",
+      "liveUrl", "githubUrl", "behanceUrl", "dribbbleUrl", "figmaUrl",
+      "featured", "published", "displayOrder"
+    ];
+
+    for (const key of validProjectKeys) {
+      if (rawData[key] !== undefined) {
+        projectUpdateData[key] = rawData[key];
+      }
+    }
+
+    if (projectUpdateData.displayOrder !== undefined) {
+      projectUpdateData.displayOrder = parseInt(projectUpdateData.displayOrder);
     }
 
     const updatedProject = await prisma.project.update({
       where: { id },
       data: {
-        ...projData,
+        ...projectUpdateData,
         caseStudy: caseStudy
           ? {
               upsert: {
                 create: {
-                  subtitle: caseStudy.subtitle || projData.title,
-                  summary: caseStudy.summary || projData.shortDesc,
-                  overview: caseStudy.overview || projData.shortDesc,
+                  subtitle: caseStudy.subtitle || projectUpdateData.title,
+                  summary: caseStudy.summary || projectUpdateData.shortDesc,
+                  overview: caseStudy.overview || projectUpdateData.shortDesc,
                   problem: caseStudy.problem || "",
                   solution: caseStudy.solution || "",
                   results: typeof caseStudy.results === "string" ? caseStudy.results : JSON.stringify(caseStudy.results || []),
