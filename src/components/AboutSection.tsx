@@ -7,10 +7,11 @@ import { ArrowRight } from "lucide-react";
 
 export default function AboutSection() {
   const [aboutData, setAboutData] = useState({
-    aboutHeading: "Sajib is a Designer Based in Dhaka, Bangladesh",
+    aboutHeading: "Sajib is an Executive UX/UI Designer Based in Dhaka, Bangladesh",
     aboutProjectsCount: "50+",
     aboutExperienceYears: "3 Years+",
-    aboutParagraph: "Crafting intuitive, high-impact digital experiences through user-centered research, thoughtful strategy, and pixel-perfect execution. Specializing in mobile apps, SaaS platforms, and design systems for startups and forward-thinking brands.",
+    aboutParagraph:
+      "Crafting intuitive, high-impact digital experiences through user-centered research, product strategy, and pixel-perfect design systems.  at Join Venture Ai with a background spanning product management, visual design, and front-end principles.",
     aboutPortrait: "/assets/about_portrait.png",
   });
 
@@ -29,7 +30,7 @@ export default function AboutSection() {
           }));
         }
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   return (
@@ -40,7 +41,7 @@ export default function AboutSection() {
           <div className="w-full max-w-[880px] flex justify-center items-center">
             <Image
               src={aboutData.aboutPortrait}
-              alt="Sajib - Designer"
+              alt="Sajib - Executive UX/UI Designer"
               width={880}
               height={1000}
               className="w-full h-auto max-h-[850px] object-contain block drop-shadow-[0_30px_60px_rgba(0,0,0,0.85)] transition-transform duration-300 lg:scale-135 lg:-translate-y-12 origin-center"

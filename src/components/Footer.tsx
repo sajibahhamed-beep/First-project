@@ -14,14 +14,13 @@ interface SocialPlatform {
 
 const defaultPlatforms: SocialPlatform[] = [
   { id: "whatsapp", name: "WhatsApp", url: "https://wa.me/+8801775551325", enabled: true },
-  { id: "facebook", name: "Facebook", url: "https://facebook.com/sajib", enabled: true },
-  { id: "youtube", name: "YouTube", url: "https://youtube.com/@sajib", enabled: true },
-  { id: "instagram", name: "Instagram", url: "https://instagram.com/sajib", enabled: true },
-  { id: "linkedin", name: "LinkedIn", url: "https://linkedin.com/in/sajib", enabled: true },
-  { id: "dribbble", name: "Dribbble", url: "https://dribbble.com/sajib", enabled: true },
-  { id: "pinterest", name: "Pinterest", url: "https://pinterest.com/sajib", enabled: true },
-  { id: "behance", name: "Behance", url: "https://behance.net/sajib", enabled: true },
-  { id: "twitter", name: "Twitter (X)", url: "https://twitter.com/sajib", enabled: true },
+  { id: "facebook", name: "Facebook", url: "https://facebook.com/sajib", enabled: false },
+  { id: "youtube", name: "YouTube", url: "https://youtube.com/@sajib", enabled: false },
+  { id: "instagram", name: "Instagram", url: "https://instagram.com/sajib", enabled: false },
+  { id: "linkedin", name: "LinkedIn", url: "https://linkedin.com/in/sajib", enabled: false },
+  { id: "dribbble", name: "Dribbble", url: "https://dribbble.com/sajib", enabled: false },
+  { id: "pinterest", name: "Pinterest", url: "https://pinterest.com/sajib", enabled: false },
+  { id: "behance", name: "Behance", url: "https://behance.net/sajib", enabled: false },
 ];
 
 const iconFileMap: Record<string, string> = {
@@ -33,24 +32,56 @@ const iconFileMap: Record<string, string> = {
   dribbble: "Listitem → Link-4.png",
   pinterest: "Listitem → Link-5.png",
   behance: "Listitem → Link-6.png",
-  twitter: "Listitem → Link-7.png",
 };
 
 export default function Footer() {
   const [platforms, setPlatforms] = useState<SocialPlatform[]>(defaultPlatforms);
+  const [info, setInfo] = useState({
+    tagline: "Crafting research-backed UI/UX design systems, web platforms & high-converting mobile experiences.",
+    whatsapp: "+880 177 555 1325",
+    whatsappLink: "https://wa.me/+8801775551325",
+    email: "ElizabethJ@jourrapide.com",
+    address: "4808 Skinner Hollow Road, Days Creek, OR 97429",
+    copyright: "All Right Reserved by Sajuxly, 2026",
+  });
 
   useEffect(() => {
+    // 1. Fetch Dynamic Social Media Links
     fetch("/api/social")
       .then((res) => res.json())
       .then((data) => {
-        if (data.platforms) {
+        if (data.platforms && Array.isArray(data.platforms)) {
           setPlatforms(data.platforms);
+        }
+      })
+      .catch(() => {});
+
+    // 2. Fetch Dynamic Contact & Footer Info
+    fetch("/api/settings")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.settings) {
+          const s = data.settings;
+          const phoneVal = s.site_whatsapp || "+880 177 555 1325";
+          const digits = phoneVal.replace(/[^0-9+]/g, "");
+          const waLink = digits.startsWith("+") ? `https://wa.me/${digits}` : `https://wa.me/+${digits}`;
+
+          setInfo({
+            tagline: s.site_tagline || "Crafting research-backed UI/UX design systems, web platforms & high-converting mobile experiences.",
+            whatsapp: phoneVal,
+            whatsappLink: waLink,
+            email: s.site_email || "ElizabethJ@jourrapide.com",
+            address: s.site_location || "4808 Skinner Hollow Road, Days Creek, OR 97429",
+            copyright: s.site_copyright || "All Right Reserved by Sajuxly, 2026",
+          });
         }
       })
       .catch(() => {});
   }, []);
 
-  const activePlatforms = platforms.filter((p) => p.enabled && p.url);
+  const activePlatforms = platforms.filter(
+    (p) => p.enabled && p.url && p.url.trim() !== ""
+  );
 
   return (
     <footer
@@ -66,16 +97,16 @@ export default function Footer() {
             <Image
               src="/assets/sajuxly_logo.png"
               alt="Sajuxly Logo"
-              width={200}
+              width={184}
               height={48}
               className="h-12 w-auto object-contain"
-              style={{ width: "auto", height: "48px" }}
+              style={{ width: "auto", height: "auto" }}
             />
           </Link>
 
           {/* Professional Brand Tagline */}
           <p className="text-[#8e8e93] font-[var(--font-inter)] text-sm leading-relaxed max-w-xs mb-6">
-            Crafting research-backed UI/UX design systems, web platforms &amp; high-converting mobile experiences.
+            {info.tagline}
           </p>
 
           {/* Active Social Icons row below logo */}
@@ -88,7 +119,7 @@ export default function Footer() {
                   href={platform.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block hover:scale-110 transition-transform duration-200"
+                  className="inline-block transition-transform duration-200 hover:scale-110 hover:opacity-90"
                   aria-label={platform.name}
                   title={platform.name}
                 >
@@ -170,12 +201,12 @@ export default function Footer() {
               <div>
                 <span className="block text-[#71717a] text-xs">WhatsApp</span>
                 <a
-                  href="https://wa.me/+8801775551325"
+                  href={info.whatsappLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-white hover:text-[#06ACFE] transition-colors font-medium"
                 >
-                  +880 177 555 1325
+                  {info.whatsapp}
                 </a>
               </div>
             </li>
@@ -185,10 +216,10 @@ export default function Footer() {
               <div>
                 <span className="block text-[#71717a] text-xs">Email</span>
                 <a
-                  href="mailto:ElizabethJ@jourrapide.com"
+                  href={`mailto:${info.email}`}
                   className="text-white hover:text-[#06ACFE] transition-colors font-medium break-all"
                 >
-                  ElizabethJ@jourrapide.com
+                  {info.email}
                 </a>
               </div>
             </li>
@@ -198,7 +229,7 @@ export default function Footer() {
               <div>
                 <span className="block text-[#71717a] text-xs">Address</span>
                 <span className="text-zinc-300 leading-relaxed block">
-                  4808 Skinner Hollow Road, Days Creek, OR 97429
+                  {info.address}
                 </span>
               </div>
             </li>
@@ -208,7 +239,7 @@ export default function Footer() {
 
       {/* Footer Copyright */}
       <div className="max-w-7xl mx-auto pt-8 border-t border-white/5 text-center text-[#71717a] font-[var(--font-inter)] text-sm relative z-10">
-        <p>All Right Reserved by Sajuxly, 2026</p>
+        <p>{info.copyright}</p>
       </div>
     </footer>
   );

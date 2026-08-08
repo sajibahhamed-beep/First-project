@@ -191,7 +191,7 @@ export default function IndustryExperienceSection() {
   const [projects, setProjects] = useState<Project[]>(defaultProjects);
 
   useEffect(() => {
-    fetch("/api/projects")
+    fetch("/api/projects?featured=true")
       .then((res) => res.json())
       .then((data) => {
         if (data.projects && data.projects.length > 0) {
