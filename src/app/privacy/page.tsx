@@ -59,7 +59,7 @@ export default function PrivacyPolicyPage() {
         </div>
       </section>
 
-      {/* Content Section */}
+      {/* Content Section with Left-Aligned Numbered Headings and Justified Descriptions */}
       <section className="py-20 px-6 md:px-12 bg-[#090b0e]">
         <div className="max-w-4xl mx-auto">
           {isLoading ? (
@@ -69,24 +69,22 @@ export default function PrivacyPolicyPage() {
           ) : sections.length > 0 ? (
             <div className="space-y-12">
               {sections.map((sec, index) => (
-                <div key={sec.id} className="flex gap-6 md:gap-10 items-start">
-                  {/* Sequence Number */}
-                  <div className="shrink-0 mt-1.5">
-                    <span className="flex items-center justify-center w-12 h-12 rounded-full bg-[#1c1f26] border border-white/10 text-[#06ACFE] font-extrabold font-[var(--font-lato)] text-xl shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+                <div key={sec.id} className="space-y-4">
+                  {/* Left-Aligned Number & Heading */}
+                  <div className="flex items-center gap-4">
+                    <span className="flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#1c1f26] border border-white/10 text-[#06ACFE] font-extrabold font-[var(--font-lato)] text-lg shadow-[0_4px_15px_rgba(0,0,0,0.5)] shrink-0">
                       {index + 1}
                     </span>
-                  </div>
-
-                  {/* Section Content */}
-                  <div className="flex-1">
-                    <h2 className="text-2xl md:text-3xl font-extrabold font-[var(--font-lato)] text-white mb-4">
+                    <h2 className="text-2xl sm:text-3xl font-extrabold font-[var(--font-lato)] text-white">
                       {sec.title || `Policy Section ${index + 1}`}
                     </h2>
-                    <div
-                      className="text-[#a1a1aa] font-[var(--font-inter)] text-base leading-relaxed whitespace-pre-line"
-                      dangerouslySetInnerHTML={{ __html: sec.description }}
-                    />
                   </div>
+
+                  {/* Justified Description Content */}
+                  <div
+                    className="text-[#a1a1aa] font-[var(--font-inter)] text-base leading-relaxed whitespace-pre-line text-justify"
+                    dangerouslySetInnerHTML={{ __html: sec.description }}
+                  />
                 </div>
               ))}
             </div>
