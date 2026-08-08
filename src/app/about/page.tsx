@@ -191,7 +191,7 @@ export default function AboutPage() {
           setResumeUrl(data.defaultResume.fileUrl);
         }
       })
-      .catch(() => { });
+      .catch(() => {});
   }, []);
 
   return (
@@ -234,7 +234,7 @@ export default function AboutPage() {
 
             {/* Bio Paragraphs */}
             <p className="text-[#8e8e93] text-base font-[var(--font-inter)] leading-relaxed mb-6 max-w-xl text-justify">
-              I am an Executive UX/UI Designer specialized in product strategy, user-centered interface architecture, design systems, and cross-functional team leadership. I partner with founders, engineering teams, and product leaders to translate complex workflows into intuitive, high-converting digital products.
+              I am a Designer specialized in product strategy, user-centered interface architecture, design systems, and cross-functional team leadership. I partner with founders, engineering teams, and product leaders to translate complex workflows into intuitive, high-converting digital products.
             </p>
 
             <p className="text-[#8e8e93] text-base font-[var(--font-inter)] leading-relaxed mb-8 max-w-xl text-justify">
@@ -247,7 +247,7 @@ export default function AboutPage() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => {
-                fetch("/api/resumes/download", { method: "POST" }).catch(() => { });
+                fetch("/api/resumes/download", { method: "POST" }).catch(() => {});
               }}
               className="inline-flex items-center gap-2.5 px-6 py-3 rounded-[4px] bg-[#181d28] text-[#8e8e93] font-medium font-[var(--font-lato)] text-sm hover:bg-[#202736] hover:text-white transition-all shadow-md mb-14"
             >
@@ -266,15 +266,15 @@ export default function AboutPage() {
               </div>
               <div className="border-b border-white/10 mb-8" />
 
-              <div className="flex flex-col gap-10">
+              <div className="flex flex-col">
                 {experiences.map((exp, index) => (
                   <div
                     key={index}
-                    className="flex flex-col sm:flex-row items-start gap-4 sm:gap-8 group"
+                    className="flex flex-col sm:flex-row items-start gap-4 sm:gap-8 pb-8 mb-8 border-b border-white/10 last:border-b-0 last:pb-0 last:mb-0"
                   >
                     {/* Role Title & Organization */}
                     <div className="sm:w-48 shrink-0 pt-0.5">
-                      <span className="text-white font-bold font-[var(--font-lato)] text-base block leading-snug group-hover:text-[#06ACFE] transition-colors">
+                      <span className="text-white font-bold font-[var(--font-lato)] text-base block leading-snug">
                         {exp.role}
                       </span>
                       <span className="text-[#06ACFE] text-xs font-semibold font-[var(--font-inter)] block mt-0.5">
@@ -307,12 +307,12 @@ export default function AboutPage() {
                         Main Skills
                       </span>
 
-                      {/* Skills Pills */}
+                      {/* Skills Pills (No hover color change) */}
                       <div className="flex flex-wrap gap-2">
                         {exp.skills.map((skill, sIdx) => (
                           <span
                             key={sIdx}
-                            className="px-3.5 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-[#8e8e93] font-[var(--font-inter)] hover:border-[#06ACFE]/40 hover:text-white transition-colors"
+                            className="px-3.5 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-[#8e8e93] font-[var(--font-inter)]"
                           >
                             {skill}
                           </span>
@@ -334,15 +334,15 @@ export default function AboutPage() {
               </div>
               <div className="border-b border-white/10 mb-8" />
 
-              <div className="flex flex-col gap-10">
+              <div className="flex flex-col">
                 {certifications.map((cert, index) => (
                   <div
                     key={index}
-                    className="flex flex-col sm:flex-row items-start gap-4 sm:gap-8 group"
+                    className="flex flex-col sm:flex-row items-start gap-4 sm:gap-8 pb-8 mb-8 border-b border-white/10 last:border-b-0 last:pb-0 last:mb-0"
                   >
                     {/* Course Title & Institution */}
                     <div className="sm:w-48 shrink-0 pt-0.5">
-                      <span className="text-white font-bold font-[var(--font-lato)] text-base block leading-snug group-hover:text-[#06ACFE] transition-colors">
+                      <span className="text-white font-bold font-[var(--font-lato)] text-base block leading-snug">
                         {cert.title}
                       </span>
                       <span className="text-[#06ACFE] text-xs font-semibold font-[var(--font-inter)] block mt-0.5">
@@ -364,12 +364,12 @@ export default function AboutPage() {
                         Core Competencies
                       </span>
 
-                      {/* Certification Focus Pills */}
+                      {/* Certification Focus Pills (No hover color change) */}
                       <div className="flex flex-wrap gap-2">
                         {cert.skills.map((skill, sIdx) => (
                           <span
                             key={sIdx}
-                            className="px-3.5 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-[#8e8e93] font-[var(--font-inter)] hover:border-[#06ACFE]/40 hover:text-white transition-colors"
+                            className="px-3.5 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-[#8e8e93] font-[var(--font-inter)]"
                           >
                             {skill}
                           </span>
@@ -387,7 +387,7 @@ export default function AboutPage() {
             <div className="w-full max-w-[500px]">
               <Image
                 src="/assets/about me image.png"
-                alt="Muhammad Sajib - Executive UX/UI Designer"
+                alt="Muhammad Sajib - Product Designer"
                 width={500}
                 height={680}
                 sizes="(max-width: 768px) 100vw, 500px"
