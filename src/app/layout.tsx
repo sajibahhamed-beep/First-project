@@ -3,20 +3,22 @@ import { Inter, Lato, Geist } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
-  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-inter",
+  display: "swap",
 });
 
 const lato = Lato({
-  variable: "--font-lato",
   subsets: ["latin"],
+  variable: "--font-lato",
+  display: "swap",
   weight: ["300", "400", "700", "900"],
 });
 
 const geist = Geist({
-  variable: "--font-geist",
   subsets: ["latin"],
+  variable: "--font-geist",
+  display: "swap",
   weight: ["300", "400", "500", "600", "700"],
 });
 
@@ -34,6 +36,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
       className={`${inter.variable} ${lato.variable} ${geist.variable} scroll-smooth antialiased`}
     >
