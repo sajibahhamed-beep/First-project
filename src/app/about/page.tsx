@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
@@ -54,6 +55,21 @@ export default function AboutPage() {
       ],
     },
   ];
+
+  const [resumeUrl, setResumeUrl] = useState<string>(
+    "https://drive.google.com/file/d/1TXMVWEfulEjQeO3Mt3o-pbQuHW4mI08z/view?usp=sharing"
+  );
+
+  useEffect(() => {
+    fetch("/api/resumes")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.defaultResume?.fileUrl) {
+          setResumeUrl(data.defaultResume.fileUrl);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   return (
     <main className="relative min-h-screen bg-[#090b0e] text-white">
@@ -110,9 +126,12 @@ export default function AboutPage() {
 
             {/* Download Resume Button */}
             <a
-              href="https://drive.google.com/file/d/1TXMVWEfulEjQeO3Mt3o-pbQuHW4mI08z/view?usp=sharing"
+              href={resumeUrl}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => {
+                fetch("/api/resumes/download", { method: "POST" }).catch(() => {});
+              }}
               className="inline-flex items-center gap-2.5 px-6 py-3 rounded-[4px] bg-[#181d28] text-[#8e8e93] font-medium font-[var(--font-lato)] text-sm hover:bg-[#202736] hover:text-white transition-all shadow-md mb-14"
             >
               Download

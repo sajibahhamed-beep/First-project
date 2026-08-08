@@ -60,7 +60,6 @@ const initialSocialPlatforms: SocialPlatformConfig[] = [
   { id: "dribbble", name: "Dribbble", url: "https://dribbble.com/sajib", enabled: true },
   { id: "pinterest", name: "Pinterest", url: "https://pinterest.com/sajib", enabled: true },
   { id: "behance", name: "Behance", url: "https://behance.net/sajib", enabled: true },
-  { id: "twitter", name: "Twitter (X)", url: "https://twitter.com/sajib", enabled: true },
 ];
 
 function SettingsContent() {
@@ -91,9 +90,11 @@ function SettingsContent() {
   // --- 1. Site & Social Settings State ---
   const [siteSettings, setSiteSettings] = useState({
     site_name: "Muhammad Sajib — UI/UX Portfolio",
-    site_email: "sajibahhamed0@gmail.com",
-    site_whatsapp: "+8801775551325",
-    site_location: "Dhaka, Bangladesh",
+    site_email: "ElizabethJ@jourrapide.com",
+    site_whatsapp: "+880 177 555 1325",
+    site_location: "4808 Skinner Hollow Road, Days Creek, OR 97429",
+    site_tagline: "Crafting research-backed UI/UX design systems, web platforms & high-converting mobile experiences.",
+    site_copyright: "All Right Reserved by Sajuxly, 2026",
   });
   const [socialPlatforms, setSocialPlatforms] = useState<SocialPlatformConfig[]>(
     initialSocialPlatforms
@@ -135,11 +136,13 @@ function SettingsContent() {
     theme_fontBody: "Inter",
   });
 
-  // --- 5. Resumes State ---
-  const [resumes, setResumes] = useState<ResumeItem[]>([]);
-  const [showAddResume, setShowAddResume] = useState(false);
-  const [newResumeTitle, setNewResumeTitle] = useState("");
-  const [newResumeUrl, setNewResumeUrl] = useState("/assets/Sajib_Product_Designer_Resume.pdf");
+  // --- 5. Simple Resume Link State ---
+  const [resumeLink, setResumeLink] = useState("");
+  const [resumeTitle, setResumeTitle] = useState("Product Designer Resume");
+  const [resumeDownloadCount, setResumeDownloadCount] = useState(0);
+  const [isSavingResume, setIsSavingResume] = useState(false);
+  const [copiedResume, setCopiedResume] = useState(false);
+  const [resumeSavedFeedback, setResumeSavedFeedback] = useState(false);
 
   // --- 6. Media State ---
   const [media, setMedia] = useState<MediaItem[]>([]);
@@ -149,7 +152,7 @@ function SettingsContent() {
 
   // Load all configurations on mount
   useEffect(() => {
-    // Load Settings
+    // Load Settings & Socials
     fetch("/api/admin/settings")
       .then((res) => res.json())
       .then((data) => {
@@ -157,9 +160,13 @@ function SettingsContent() {
           const s = data.settings;
           setSiteSettings({
             site_name: s.site_name || "Muhammad Sajib — UI/UX Portfolio",
-            site_email: s.site_email || "sajibahhamed0@gmail.com",
-            site_whatsapp: s.site_whatsapp || "+8801775551325",
-            site_location: s.site_location || "Dhaka, Bangladesh",
+            site_email: s.site_email || "ElizabethJ@jourrapide.com",
+            site_whatsapp: s.site_whatsapp || "+880 177 555 1325",
+            site_location: s.site_location || "4808 Skinner Hollow Road, Days Creek, OR 97429",
+            site_tagline:
+              s.site_tagline ||
+              "Crafting research-backed UI/UX design systems, web platforms & high-converting mobile experiences.",
+            site_copyright: s.site_copyright || "All Right Reserved by Sajuxly, 2026",
           });
           setSocialPlatforms((prev) =>
             prev.map((p) => {
@@ -219,10 +226,16 @@ function SettingsContent() {
       })
       .catch(() => {});
 
-    // Load Resumes
+    // Load Resume Link & Stats
     fetch("/api/admin/resumes")
       .then((res) => res.json())
-      .then((data) => setResumes(data.resumes || []))
+      .then((data) => {
+        if (data.resume) {
+          setResumeLink(data.resume.fileUrl || "");
+          setResumeTitle(data.resume.title || "Product Designer Resume");
+          setResumeDownloadCount(data.resume.downloadCount || 0);
+        }
+      })
       .catch(() => {});
 
     // Load Media
@@ -315,38 +328,45 @@ function SettingsContent() {
     }
   };
 
-  const handleAddResume = async (e: FormEvent) => {
+  const handleSaveResumeLink = async (e: FormEvent) => {
     e.preventDefault();
-    if (!newResumeTitle) return;
+    if (!resumeLink) return;
 
+    setIsSavingResume(true);
     try {
       const res = await fetch("/api/admin/resumes", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          title: newResumeTitle,
-          fileUrl: newResumeUrl,
-          fileSize: "1.2 MB",
-          filename: newResumeUrl.split("/").pop() || "Resume.pdf",
+          fileUrl: resumeLink.trim(),
+          title: resumeTitle.trim() || "Product Designer Resume",
         }),
       });
 
       if (res.ok) {
-        setShowAddResume(false);
-        setNewResumeTitle("");
-        fetch("/api/admin/resumes")
-          .then((r) => r.json())
-          .then((d) => setResumes(d.resumes || []));
+        const data = await res.json();
+        if (data.resume) {
+          setResumeLink(data.resume.fileUrl);
+          setResumeTitle(data.resume.title);
+          setResumeDownloadCount(data.resume.downloadCount || 0);
+        }
+        setResumeSavedFeedback(true);
+        setTimeout(() => setResumeSavedFeedback(false), 3000);
+      } else {
+        alert("Failed to save resume link");
       }
     } catch {
-      alert("Failed to add resume");
+      alert("Failed to save resume link");
+    } finally {
+      setIsSavingResume(false);
     }
   };
 
-  const handleDeleteResume = async (id: string, title: string) => {
-    if (!confirm(`Delete "${title}"?`)) return;
-    const res = await fetch(`/api/admin/resumes?id=${id}`, { method: "DELETE" });
-    if (res.ok) setResumes(resumes.filter((r) => r.id !== id));
+  const handleCopyResumeLink = () => {
+    if (!resumeLink) return;
+    navigator.clipboard.writeText(resumeLink);
+    setCopiedResume(true);
+    setTimeout(() => setCopiedResume(false), 2000);
   };
 
   const handleMediaUpload = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -747,60 +767,119 @@ function SettingsContent() {
         </form>
       )}
 
-      {/* --- TAB 5: RESUMES --- */}
+      {/* --- TAB 5: RESUMES (SIMPLE LINK & DOWNLOAD COUNTER ONLY) --- */}
       {activeTab === "resumes" && (
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold font-[var(--font-lato)] text-[#06ACFE]">Resume Files</h2>
-            <button
-              onClick={() => setShowAddResume(!showAddResume)}
-              className="px-4 py-2 rounded-xl bg-[#06ACFE] text-white text-xs font-bold flex items-center gap-2"
-            >
-              <Plus className="w-4 h-4" />
-              <span>Upload Resume</span>
-            </button>
+        <div className="max-w-3xl space-y-6">
+          <div>
+            <h2 className="text-lg font-bold font-[var(--font-lato)] text-[#06ACFE]">
+              Resume Link Configuration
+            </h2>
+            <p className="text-xs text-[#8e8e93] font-[var(--font-inter)] mt-0.5">
+              Add or update your resume link below (e.g. Google Drive link or hosted PDF). When visitors click &quot;Download Resume&quot; on your website, this link will open in a new tab.
+            </p>
           </div>
 
-          {showAddResume && (
-            <form onSubmit={handleAddResume} className="p-4 rounded-xl bg-[#090b0e] border border-white/10 space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Simple Form to Add / Update Resume Link */}
+          <form
+            onSubmit={handleSaveResumeLink}
+            className="p-6 rounded-2xl bg-[#121826]/80 border border-white/10 space-y-4 shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
+          >
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-[#8e8e93] mb-2 font-[var(--font-lato)]">
+                Resume Link / URL
+              </label>
+              <div className="flex flex-col sm:flex-row gap-3">
                 <input
                   type="text"
                   required
-                  placeholder="Resume Title..."
-                  value={newResumeTitle}
-                  onChange={(e) => setNewResumeTitle(e.target.value)}
-                  className="px-4 py-2 bg-[#121826] border border-white/10 rounded-lg text-white text-xs"
+                  placeholder="https://drive.google.com/file/d/... or /assets/Resume.pdf"
+                  value={resumeLink}
+                  onChange={(e) => setResumeLink(e.target.value)}
+                  className="flex-1 px-4 py-3 bg-[#090b0e] border border-white/10 rounded-xl text-white text-xs font-mono focus:outline-none focus:border-[#06ACFE] transition-all"
                 />
-                <input
-                  type="text"
-                  required
-                  value={newResumeUrl}
-                  onChange={(e) => setNewResumeUrl(e.target.value)}
-                  className="px-4 py-2 bg-[#121826] border border-white/10 rounded-lg text-white text-xs font-mono"
-                />
-              </div>
-              <button type="submit" className="px-4 py-2 rounded-lg bg-[#06ACFE] text-white text-xs font-bold">
-                Add File
-              </button>
-            </form>
-          )}
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {resumes.map((r) => (
-              <div key={r.id} className="p-4 rounded-xl bg-[#121826]/70 border border-white/10 flex justify-between items-center">
-                <div>
-                  <h3 className="font-bold text-white text-sm">{r.title}</h3>
-                  <span className="text-xs text-[#06ACFE] font-mono">{r.downloadCount} Downloads</span>
-                </div>
                 <button
-                  onClick={() => handleDeleteResume(r.id, r.title)}
-                  className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg"
+                  type="submit"
+                  disabled={isSavingResume}
+                  className="px-6 py-3 rounded-xl bg-[#06ACFE] hover:bg-[#0098e6] text-white font-bold font-[var(--font-lato)] text-xs transition-all shadow-[0_2px_15px_rgba(6,172,254,0.4)] disabled:opacity-50 flex items-center justify-center gap-2 shrink-0"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Save className="w-4 h-4" />
+                  <span>{isSavingResume ? "Saving..." : "Save Resume Link"}</span>
                 </button>
               </div>
-            ))}
+              {resumeSavedFeedback && (
+                <p className="text-xs text-emerald-400 font-medium mt-2 flex items-center gap-1.5 animate-in fade-in">
+                  <Check className="w-3.5 h-3.5" />
+                  <span>Resume link updated successfully!</span>
+                </p>
+              )}
+            </div>
+          </form>
+
+          {/* Single Card: Current Resume Link & Total Downloads Counter */}
+          <div className="p-6 rounded-2xl bg-[#121826]/90 border border-[#06ACFE]/40 shadow-[0_10px_30px_rgba(6,172,254,0.12)] space-y-5">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#06ACFE] font-[var(--font-lato)]">
+                  Live Active Resume
+                </span>
+                <h3 className="text-base font-bold text-white mt-0.5">
+                  {resumeTitle || "Product Designer Resume"}
+                </h3>
+              </div>
+
+              {/* Total Downloads Counter */}
+              <div className="px-5 py-2.5 rounded-xl bg-[#06ACFE]/10 border border-[#06ACFE]/30 flex items-center gap-3 shrink-0">
+                <Download className="w-5 h-5 text-[#06ACFE]" />
+                <div>
+                  <div className="text-[11px] text-[#8e8e93] font-medium">Total Downloads</div>
+                  <div className="text-xl font-extrabold text-[#06ACFE] font-mono leading-tight">
+                    {resumeDownloadCount} times
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-[#8e8e93] mb-1.5 font-[var(--font-lato)]">
+                Configured Link
+              </label>
+              <p className="text-xs text-[#8e8e93] font-mono bg-[#090b0e] px-4 py-3 rounded-xl border border-white/10 break-all select-all">
+                {resumeLink || "No resume link configured yet"}
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3 pt-1">
+              <a
+                href={resumeLink || "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#06ACFE] hover:bg-[#0098e6] text-white text-xs font-bold transition-all shadow-[0_2px_15px_rgba(6,172,254,0.3)] ${
+                  !resumeLink ? "pointer-events-none opacity-50" : ""
+                }`}
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                <span>Open Resume in New Tab</span>
+              </a>
+
+              <button
+                type="button"
+                onClick={handleCopyResumeLink}
+                disabled={!resumeLink}
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-medium text-[#8e8e93] hover:text-white transition-all disabled:opacity-50"
+              >
+                {copiedResume ? (
+                  <>
+                    <Check className="w-3.5 h-3.5 text-emerald-400" />
+                    <span className="text-emerald-400 font-bold">Copied!</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-3.5 h-3.5" />
+                    <span>Copy Link</span>
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       )}

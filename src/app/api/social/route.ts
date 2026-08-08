@@ -17,7 +17,6 @@ const defaultPlatforms: SocialLinkItem[] = [
   { id: "dribbble", name: "Dribbble", url: "https://dribbble.com/sajib", enabled: true },
   { id: "pinterest", name: "Pinterest", url: "https://pinterest.com/sajib", enabled: true },
   { id: "behance", name: "Behance", url: "https://behance.net/sajib", enabled: true },
-  { id: "twitter", name: "Twitter (X)", url: "https://twitter.com/sajib", enabled: true },
 ];
 
 export async function GET() {

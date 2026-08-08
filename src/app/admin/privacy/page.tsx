@@ -75,7 +75,7 @@ export default function PrivacyPolicyAdmin() {
 
   return (
     <div className="flex-1 bg-[#090b0e] h-screen overflow-y-auto">
-      <AdminHeader title="Privacy Policy" />
+      <AdminHeader />
 
       <main className="p-8 max-w-4xl mx-auto">
         <div className="bg-[#121418] border border-white/10 rounded-2xl p-6">

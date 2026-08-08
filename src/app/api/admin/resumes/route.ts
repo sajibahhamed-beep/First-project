@@ -3,53 +3,85 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   try {
-    const resumes = await prisma.resume.findMany({
+    const resume =
+      (await prisma.resume.findFirst({ where: { isDefault: true } })) ||
+      (await prisma.resume.findFirst({ orderBy: { updatedAt: "desc" } }));
+
+    const allResumes = await prisma.resume.findMany({
       orderBy: { updatedAt: "desc" },
     });
-    return NextResponse.json({ resumes });
+
+    return NextResponse.json({
+      success: true,
+      resume: resume || null,
+      resumes: allResumes,
+      downloadCount: resume ? resume.downloadCount : 0,
+    });
   } catch (error) {
-    return NextResponse.json({ error: "Failed to fetch resumes" }, { status: 500 });
+    console.error("Fetch resume error:", error);
+    return NextResponse.json({ error: "Failed to fetch resume" }, { status: 500 });
   }
 }
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { title, filename, fileUrl, fileSize, isDefault } = body;
+    const { fileUrl, title } = body;
 
-    if (!title || !fileUrl) {
-      return NextResponse.json({ error: "Title and file URL are required" }, { status: 400 });
+    if (!fileUrl) {
+      return NextResponse.json({ error: "Resume URL is required" }, { status: 400 });
     }
 
-    if (isDefault) {
-      await prisma.resume.updateMany({ data: { isDefault: false } });
-    }
+    const cleanUrl = fileUrl.trim();
+    const cleanTitle = (title && title.trim()) || "UX & Product Designer Resume (2026)";
 
-    const newResume = await prisma.resume.create({
-      data: {
-        title,
-        filename: filename || "Sajib_Resume.pdf",
-        fileUrl,
-        fileSize: fileSize || "1.0 MB",
-        isDefault: isDefault ?? false,
-      },
+    // Update existing single resume or create new one
+    const existing = await prisma.resume.findFirst({
+      orderBy: { updatedAt: "desc" },
     });
 
-    return NextResponse.json({ success: true, resume: newResume });
+    let resume;
+    if (existing) {
+      // Ensure only this one is default
+      await prisma.resume.updateMany({
+        where: { id: { not: existing.id } },
+        data: { isDefault: false },
+      });
+
+      resume = await prisma.resume.update({
+        where: { id: existing.id },
+        data: {
+          fileUrl: cleanUrl,
+          title: cleanTitle,
+          isDefault: true,
+        },
+      });
+    } else {
+      resume = await prisma.resume.create({
+        data: {
+          title: cleanTitle,
+          filename: cleanUrl.split("/").pop() || "Resume.pdf",
+          fileUrl: cleanUrl,
+          fileSize: "1.2 MB",
+          isDefault: true,
+          downloadCount: 0,
+        },
+      });
+    }
+
+    return NextResponse.json({ success: true, resume });
   } catch (error) {
-    return NextResponse.json({ error: "Failed to add resume" }, { status: 500 });
+    console.error("Save resume link error:", error);
+    return NextResponse.json({ error: "Failed to save resume link" }, { status: 500 });
   }
 }
 
 export async function DELETE(request: Request) {
   try {
-    const { searchParams } = new URL(request.url);
-    const id = searchParams.get("id");
-    if (!id) return NextResponse.json({ error: "ID required" }, { status: 400 });
-
-    await prisma.resume.delete({ where: { id } });
+    await prisma.resume.deleteMany({});
     return NextResponse.json({ success: true, message: "Resume deleted" });
   } catch (error) {
-    return NextResponse.json({ error: "Failed to delete" }, { status: 500 });
+    console.error("Delete resume error:", error);
+    return NextResponse.json({ error: "Failed to delete resume" }, { status: 500 });
   }
 }
