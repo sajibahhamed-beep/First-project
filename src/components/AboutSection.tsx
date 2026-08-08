@@ -81,7 +81,7 @@ export default function AboutSection() {
               </div>
             </div>
 
-            <p className="text-[#8e8e93] text-lg sm:text-xl font-[var(--font-inter)] leading-relaxed mb-10 text-justify">
+            <p className="text-[#8e8e93] text-lg sm:text-xl font-[var(--font-inter)] leading-relaxed mb-10 text-left">
               {aboutData.aboutParagraph}
             </p>
           </div>

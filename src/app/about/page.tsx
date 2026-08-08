@@ -233,11 +233,11 @@ export default function AboutPage() {
             </p>
 
             {/* Bio Paragraphs */}
-            <p className="text-[#8e8e93] text-base font-[var(--font-inter)] leading-relaxed mb-6 max-w-xl text-justify">
+            <p className="text-[#8e8e93] text-base font-[var(--font-inter)] leading-relaxed mb-6 max-w-xl text-left">
               I am a Designer specialized in product strategy, user-centered interface architecture, design systems, and cross-functional team leadership. I partner with founders, engineering teams, and product leaders to translate complex workflows into intuitive, high-converting digital products.
             </p>
 
-            <p className="text-[#8e8e93] text-base font-[var(--font-inter)] leading-relaxed mb-8 max-w-xl text-justify">
+            <p className="text-[#8e8e93] text-base font-[var(--font-inter)] leading-relaxed mb-8 max-w-xl text-left">
               With hands-on experience spanning product management, usability testing, graphic design, and front-end development, I approach every digital challenge with a 360-degree perspective &mdash; combining business viability with aesthetic elegance and seamless usability.
             </p>
 
