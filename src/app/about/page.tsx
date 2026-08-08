@@ -219,25 +219,25 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Main Content matching original layout with format preserved */}
+      {/* Main Content matching exact vertical alignment with heading and justified descriptions */}
       <section className="py-16 px-6 md:px-12 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          {/* Left Column: Bio Narrative, Experience Timeline & Certifications */}
-          <div className="lg:col-span-7 flex flex-col items-start">
+          {/* Left Column: Vertically left-aligned with top heading */}
+          <div className="lg:col-span-7 flex flex-col items-start w-full">
             {/* Name Headline & Sub-headline */}
-            <h2 className="text-4xl md:text-5xl font-extrabold font-[var(--font-lato)] text-white mb-1.5 leading-tight">
+            <h2 className="text-4xl md:text-5xl font-extrabold font-[var(--font-lato)] text-white mb-1.5 leading-tight text-left">
               Muhammad Sajib
             </h2>
-            <p className="text-2xl font-bold font-[var(--font-lato)] text-[#06ACFE] mb-6">
+            <p className="text-2xl font-bold font-[var(--font-lato)] text-[#06ACFE] mb-6 text-left">
               Product Designer
             </p>
 
-            {/* Bio Paragraphs */}
-            <p className="text-[#8e8e93] text-base font-[var(--font-inter)] leading-relaxed mb-6 max-w-xl text-left">
+            {/* Bio Paragraphs — Cleanly Justified across column width */}
+            <p className="text-[#8e8e93] text-base font-[var(--font-inter)] leading-relaxed mb-6 w-full text-justify">
               I am a Designer specialized in product strategy, user-centered interface architecture, design systems, and cross-functional team leadership. I partner with founders, engineering teams, and product leaders to translate complex workflows into intuitive, high-converting digital products.
             </p>
 
-            <p className="text-[#8e8e93] text-base font-[var(--font-inter)] leading-relaxed mb-8 max-w-xl text-left">
+            <p className="text-[#8e8e93] text-base font-[var(--font-inter)] leading-relaxed mb-8 w-full text-justify">
               With hands-on experience spanning product management, usability testing, graphic design, and front-end development, I approach every digital challenge with a 360-degree perspective &mdash; combining business viability with aesthetic elegance and seamless usability.
             </p>
 
@@ -260,20 +260,20 @@ export default function AboutPage() {
             <div className="w-full mb-16">
               <div className="flex items-center gap-3 mb-2">
                 <Briefcase className="w-4 h-4 text-[#06ACFE]" />
-                <h3 className="text-[#06ACFE] text-sm font-bold font-[var(--font-lato)] uppercase tracking-wider">
+                <h3 className="text-[#06ACFE] text-sm font-bold font-[var(--font-lato)] uppercase tracking-wider text-left">
                   Professional Experience
                 </h3>
               </div>
-              <div className="border-b border-white/10 mb-8" />
+              <div className="border-b border-white/10 mb-8 w-full" />
 
-              <div className="flex flex-col">
+              <div className="flex flex-col w-full">
                 {experiences.map((exp, index) => (
                   <div
                     key={index}
-                    className="flex flex-col sm:flex-row items-start gap-4 sm:gap-8 pb-8 mb-8 border-b border-white/10 last:border-b-0 last:pb-0 last:mb-0"
+                    className="flex flex-col sm:flex-row items-start gap-4 sm:gap-8 pb-8 mb-8 border-b border-white/10 last:border-b-0 last:pb-0 last:mb-0 w-full"
                   >
                     {/* Role Title & Organization */}
-                    <div className="sm:w-48 shrink-0 pt-0.5">
+                    <div className="sm:w-48 shrink-0 pt-0.5 text-left">
                       <span className="text-white font-bold font-[var(--font-lato)] text-base block leading-snug">
                         {exp.role}
                       </span>
@@ -283,17 +283,17 @@ export default function AboutPage() {
                     </div>
 
                     {/* Content Details */}
-                    <div className="flex-1">
-                      <p className="text-[#71717a] text-xs font-mono mb-2">
+                    <div className="flex-1 w-full text-left">
+                      <p className="text-[#71717a] text-xs font-mono mb-2 text-left">
                         {exp.date}
                       </p>
-                      <p className="text-[#8e8e93] text-sm font-[var(--font-inter)] leading-relaxed mb-3">
+                      <p className="text-[#8e8e93] text-sm font-[var(--font-inter)] leading-relaxed mb-3 text-justify">
                         {exp.desc}
                       </p>
 
                       {/* Key Highlights / Bullet Focus */}
                       {exp.highlights && exp.highlights.length > 0 && (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 mb-3.5 text-xs text-zinc-300 font-[var(--font-inter)]">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 mb-3.5 text-xs text-zinc-300 font-[var(--font-inter)] text-left">
                           {exp.highlights.map((hl, hIdx) => (
                             <div key={hIdx} className="flex items-center gap-1.5">
                               <span className="w-1.5 h-1.5 rounded-full bg-[#06ACFE] shrink-0" />
@@ -303,11 +303,11 @@ export default function AboutPage() {
                         </div>
                       )}
 
-                      <span className="text-[#71717a] text-xs font-semibold font-[var(--font-inter)] mb-2 block">
+                      <span className="text-[#71717a] text-xs font-semibold font-[var(--font-inter)] mb-2 block text-left">
                         Main Skills
                       </span>
 
-                      {/* Skills Pills (No hover color change) */}
+                      {/* Skills Pills */}
                       <div className="flex flex-wrap gap-2">
                         {exp.skills.map((skill, sIdx) => (
                           <span
@@ -328,20 +328,20 @@ export default function AboutPage() {
             <div className="w-full">
               <div className="flex items-center gap-3 mb-2">
                 <Award className="w-4 h-4 text-[#06ACFE]" />
-                <h3 className="text-[#06ACFE] text-sm font-bold font-[var(--font-lato)] uppercase tracking-wider">
+                <h3 className="text-[#06ACFE] text-sm font-bold font-[var(--font-lato)] uppercase tracking-wider text-left">
                   Training &amp; Certification
                 </h3>
               </div>
-              <div className="border-b border-white/10 mb-8" />
+              <div className="border-b border-white/10 mb-8 w-full" />
 
-              <div className="flex flex-col">
+              <div className="flex flex-col w-full">
                 {certifications.map((cert, index) => (
                   <div
                     key={index}
-                    className="flex flex-col sm:flex-row items-start gap-4 sm:gap-8 pb-8 mb-8 border-b border-white/10 last:border-b-0 last:pb-0 last:mb-0"
+                    className="flex flex-col sm:flex-row items-start gap-4 sm:gap-8 pb-8 mb-8 border-b border-white/10 last:border-b-0 last:pb-0 last:mb-0 w-full"
                   >
                     {/* Course Title & Institution */}
-                    <div className="sm:w-48 shrink-0 pt-0.5">
+                    <div className="sm:w-48 shrink-0 pt-0.5 text-left">
                       <span className="text-white font-bold font-[var(--font-lato)] text-base block leading-snug">
                         {cert.title}
                       </span>
@@ -351,20 +351,20 @@ export default function AboutPage() {
                     </div>
 
                     {/* Content Details */}
-                    <div className="flex-1">
-                      <p className="text-[#71717a] text-xs font-mono mb-2">
+                    <div className="flex-1 w-full text-left">
+                      <p className="text-[#71717a] text-xs font-mono mb-2 text-left">
                         {cert.year}
                       </p>
-                      <p className="text-[#8e8e93] text-sm font-[var(--font-inter)] leading-relaxed mb-3.5">
+                      <p className="text-[#8e8e93] text-sm font-[var(--font-inter)] leading-relaxed mb-3.5 text-justify">
                         <strong className="text-white font-medium">Focus:</strong>{" "}
                         {cert.focus}
                       </p>
 
-                      <span className="text-[#71717a] text-xs font-semibold font-[var(--font-inter)] mb-2 block">
+                      <span className="text-[#71717a] text-xs font-semibold font-[var(--font-inter)] mb-2 block text-left">
                         Core Competencies
                       </span>
 
-                      {/* Certification Focus Pills (No hover color change) */}
+                      {/* Certification Focus Pills */}
                       <div className="flex flex-wrap gap-2">
                         {cert.skills.map((skill, sIdx) => (
                           <span
