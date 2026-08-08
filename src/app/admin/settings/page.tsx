@@ -261,7 +261,7 @@ function SettingsContent() {
       const res = await fetch("/api/admin/settings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ settings: payload }),
+        body: JSON.stringify({ settings: payload, socials: socialPlatforms }),
       });
       if (res.ok) setMessage("Site & Social Media settings saved!");
     } catch {

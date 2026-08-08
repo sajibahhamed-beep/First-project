@@ -19,10 +19,14 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { settings, socials } = body;
 
-    // 1. Save general site & footer settings
+    // 1. Save general site settings & direct key-value pairs
     if (settings && typeof settings === "object") {
       for (const [key, value] of Object.entries(settings)) {
-        const fullKey = key.startsWith("site_") ? key : `site_${key}`;
+        const fullKey =
+          key.startsWith("site_") || key.startsWith("social_")
+            ? key
+            : `site_${key}`;
+
         await prisma.siteSetting.upsert({
           where: { key: fullKey },
           update: { value: String(value ?? "") },
@@ -31,7 +35,7 @@ export async function POST(request: Request) {
       }
     }
 
-    // 2. Save social platform links & enabled states
+    // 2. Save social platform links & enabled/disabled states cleanly
     if (Array.isArray(socials)) {
       for (const platform of socials) {
         if (platform.id) {
@@ -53,7 +57,7 @@ export async function POST(request: Request) {
       }
     }
 
-    return NextResponse.json({ success: true, message: "Footer & site settings saved successfully" });
+    return NextResponse.json({ success: true, message: "Site & Social Media settings saved successfully" });
   } catch (error) {
     console.error("Save site settings error:", error);
     return NextResponse.json({ error: "Failed to save settings" }, { status: 500 });
